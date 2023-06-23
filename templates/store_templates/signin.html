@@ -1,0 +1,60 @@
+
+{% extends 'store_templates\homepage.html' %}
+{% load static %}
+
+    
+{% block content %}
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+        <strong>Message:</strong>{{message}}
+        <button type="button" class="close" data-bs-dismiss="alert" aria-label="close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    
+    </div>
+    {% endfor %}
+   
+        <!-- Sing in  Form -->
+        <section class="sign-in">
+            <div class="container">
+                <div class="signin-content">
+                    <!-- <div class="signin-image">
+                        <figure><img src="{% static 'signup/images/signin-image.jpg' %}" alt="sing up image"></figure>
+                        <a href="{% url 'signup' %}" class="signup-image-link">Create an account</a>
+                        
+                    </div> -->
+
+                    <div class="signin-form">
+                        <h2 class="form-title">Sign In</h2>
+
+                      {% block otpcontent %}
+
+                       
+                        <form method="POST" class="register-form" id="login-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="email" id="email" placeholder="email"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="pass1"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="pass1" id="pass1" placeholder="Password"/>
+                            </div>
+                            
+                            <div class="form-group form-button">
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="sign in"/>
+                            </div>
+                        </form>
+                    <a href="{% url 'otp_login' %}">Login using otp</a>
+                   
+
+                   
+                       {% endblock otpcontent %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+ {% endblock content %}

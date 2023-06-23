@@ -1,0 +1,50 @@
+
+{% extends 'store_templates\homepage.html' %}
+{% load static %}
+
+    
+{% block content %}
+   
+ 
+   
+       
+        <section class="sign-in">
+           <div class="container d-flex">
+            {% if address_added %}
+            <div class="card mt-5 mb-5" style="width: 18rem;height: 18rem;">
+                    <div class="card-body">
+                    <h1 class="card-title">Your Address</h1>
+                    <h5 class="card-subtitle mb-2 ">Name : {{user_profile.user.name}}</h5>
+                    <h5 class="card-subtitle ml-0">Phone.No : {{user_profile.user.phone_number}}</h5>
+                    <h5 class="card-subtitle ml-0">{{user_profile.address_line_1}}</h5>
+                    <h5 class="card-subtitle ml-0">{{user_profile.address_line_2}}</h5>
+                    <h5 class="card-subtitle ml-0">{{user_profile.city}}</h5>
+                    <h5 class="card-subtitle ml-0">{{user_profile.state}}</h5>
+                    <h5 class="card-subtitle ml-0">{{user_profile.country}}</h5>
+                    <h5 class="card-subtitle ml-0">{{user_profile.pincode}}</h5>
+                    </div>
+            </div>
+            <div class="card mt-5 mb-5" style="border:none;width: 18rem;height: 18rem;">
+                
+
+            <a class="btn mt-5 ml-5 mr-5" style="border-color: black;font-size: 13px;" href="{% url 'edit_address' %}">Edit Shipping Address</a>
+            <a class="btn mt-5  ml-5 mr-5"style="border-color: black;font-size: 13px;" href="{% url 'delete_address' %}">Delete Shipping Address</a>
+
+            </div>
+
+            {% else %}
+
+            <div class="card mt-5 mb-5" style="width: 18rem;height: 18rem;">
+                <h5 class="card-title mt-5 text-center">Your Address is Empty</h5>
+
+            <a class="btn ml-5 mr-5" style="border-color: black;" href="{% url 'add_address' %}">Add Shipping Address</a>
+            </div>
+            {% endif %}
+            
+           </div>
+             
+        </section>
+
+
+
+ {% endblock content %}

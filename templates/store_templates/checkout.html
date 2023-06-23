@@ -1,0 +1,78 @@
+
+{% extends 'store_templates\homepage.html' %}
+{% load static %}
+
+    
+{% block content %}
+   
+ 
+
+       
+        <section class="sign-in">
+           <div class="container d-flex">
+            {% if address_added %}
+            <div class="card mt-5 mb-5" style="width: 18rem;height: 25rem; border: none;">
+                    <div class="card-body mb-0">
+                    <h1 class="card-title">Your Address</h1>
+                    <h5 class="card-subtitle mb-2 ">Name : {{user_profile.user.name}}</h5>
+                    <h5 class="card-subtitle ml-0">Phone.No : {{user_profile.user.phone_number}}</h5>
+                    <h5 class="card-subtitle ml-0">{{user_profile.address_line_1}}</h5>
+                    <h5 class="card-subtitle ml-0">{{user_profile.address_line_2}}</h5>
+                    <h5 class="card-subtitle ml-0">{{user_profile.city}}</h5>
+                    <h5 class="card-subtitle ml-0">{{user_profile.state}}</h5>
+                    <h5 class="card-subtitle ml-0">{{user_profile.country}}</h5>
+                    <h5 class="card-subtitle ml-0">{{user_profile.pincode}}</h5>
+                    </div>
+                   
+                    <div class="mb-5">
+                        <a class="btn" style="border-color: black;font-size: 13px;" href="{% url 'edit_address' %}">Edit Shipping Address</a>
+                    </div>
+                 
+            </div>
+            <div class="card-body mt-5">
+                <h1 class="card-title">Choose Payment Method</h1>
+                    <h5 class="card-subtitle ml-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                      </svg>
+                      <a class="myLink" href="">Cash On delivery</a>
+                    </h5>
+                    <h5 class="card-subtitle ml-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                        </svg>
+                      <a href="" class="myLink">Credit Card Payment</a>
+                    </h5>
+                   
+                    <a style="display: none;" href="{% url 'order_summary'  %}" class="myButton btn btn-dark ml-5">Proceed to pay</a>
+
+                </div>
+           </div>
+
+            {% else %}
+
+            <div class="card mt-5 mb-5" style="width: 18rem;height: 18rem;">
+                <h5 class="card-title mt-5 text-center">Your Address is Empty</h5>
+
+            <a class="btn ml-5 mr-5" style="border-color: black;" href="{% url 'add_address' %}">Add Shipping Address</a>
+            </div>
+            {% endif %}
+            
+
+            
+             
+        </section>
+
+
+<!-- to show payment button when we select payment method -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.myLink').click(function (event) {
+            event.preventDefault(); // Prevent the default behavior of the hyperlink
+            $('.myButton').show();
+        });
+    });
+</script>
+ {% endblock content %}

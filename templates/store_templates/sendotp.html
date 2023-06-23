@@ -1,0 +1,21 @@
+{% extends 'store_templates\signin.html' %}
+
+{% load static %}
+
+
+{% block otpcontent %}
+
+
+<form method="POST" class="register-form" id="login-form" action="">
+    {% csrf_token %}
+
+        {{ form.as_p}}
+    
+    <div class="form-group form-button">
+        <input type="submit" name="sendotp" id="sendotp" class="form-submit" value="send"/>
+    </div>
+</form>
+                        
+                        
+
+{% endblock otpcontent %}

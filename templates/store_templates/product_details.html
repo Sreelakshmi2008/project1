@@ -1,0 +1,101 @@
+ {% extends 'store_templates\homepage.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="container mt-5 mb-5">
+  <div class="row d-flex justify-content-center">
+      <div class="col-md-10">
+        <div class="card" style="border: none;">
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="images p-3">
+                          <div class="text-center p-4">
+                            <img id="main-image" src="{{ MEDIA_URL }}{{ product.productcolor.first.color_image.url}}" alt="not working" width="250" data-action="zoom" />
+                          </div>
+                          <div class="thumbnail text-center"> 
+                              {% for image in product.productcolor.all %}
+                              <img onclick="change_image(this)" src="{{ MEDIA_URL }}{{ image.color_image.url }}" width="70" data-color="{{ image.color }}"> 
+                              {% endfor %} 
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="product p-4">
+                          <div class="d-flex justify-content-between align-items-center">
+                              <div class="d-flex align-items-center"> <i class="fa fa-long-arrow-left"></i> <span class="ml-1">Back</span> </div> <i class="fa fa-shopping-cart text-muted"></i>
+                          </div>
+                          <div class="mt-4 mb-3"> <span class="text-uppercase text-muted brand">Orianz</span>
+                              <h5 class="text-uppercase">{{ product.name }}</h5>
+                              <div class="price d-flex flex-row align-items-center"> 
+                                
+                                <span class="act-price" id="current_price">
+
+                                  ₹ {{product.productvariant.first.price}}
+                                  
+                                 </span>
+                                 
+                                   
+                              </div>
+                          </div>
+                          
+                          {% if product.stock >= 1 %}
+                         
+                          <div class="col-4 input-group mb-3">
+                            <button class="quantity-up-btn btn btn-outline-secondary" type="button" onclick="incrementQuantity('{{product.stock}}')">+</button>
+                            
+                            <input type="hidden" class="stock form-control" id="stock" value="{{product.stock}}" aria-label="" aria-describedby="basic-addon1">
+
+                            <input type="number" class="quantity form-control" id="quantity" value="1" aria-label="" aria-describedby="basic-addon1">
+                            
+                              
+                            <button class="quantity-up-btn btn btn-outline-secondary" type="button" onclick="decrementQuantity('{{product.stock}}')">-</button>
+                            
+                          </div>
+
+                          {% else %}
+                          <p class="about"><small style="color: red;">OUT OF STOCK</small></p>
+                          {% endif %}
+                          <p class="about">Shop from a wide range of t-shirt from orianz. Pefect for your everyday use, you could pair it with a stylish pair of jeans or trousers complete the look.</p>
+                          <div class="sizes mt-5">
+                              <h6 class="text-uppercase">Size</h6>
+                              {% for variation in product.productvariant.all %}
+                              <label class="radio">
+                                 <input type="radio" name="size" value="{{variation.size}}" data-size="{{variation.size}}" onclick="get_correct_prize('{{variation.price}}')">
+                                 <span id="productsize">{{variation.size}}</span>
+                               
+                              </label>
+                              {% endfor %}
+                          </div>
+                          <div class="row">
+                            <div class="col-6 cart mt-4 align-items-center"> 
+                                <input type="hidden" name="productid" id="productid"  value="{{product.id}}">
+                                <input type="hidden" name="selectedsize" id="selectedsize"  value="">
+                                <input type="hidden" name="selectedprice" id="selectedprice"  value="">
+                                <input type="hidden" name="selectedcolor" id="selectedcolor"  value="">
+                                {{text}}
+                                <button class="addToCartButton btn btn-danger text-uppercase mr-2 px-4" data-id="{{product.id}}">
+                                Add to cart
+                                </button>
+                            </div>
+                            <div class="col-6 cart mt-4 align-items-center"> 
+                              <button class="btn btn-warning text-uppercase mr-2 px-4">Buy Now</button> 
+                              <i class="fa fa-heart text-muted"></i> <i class="fa fa-share-alt text-muted"></i>  
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+{% endblock content %} 

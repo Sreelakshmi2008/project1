@@ -1,0 +1,117 @@
+{% extends "store_templates\homepage.html" %}
+{% block content %}
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="{% url 'homepage' %}"><i class="fa fa-home"></i> Home</a>
+                    <span class="ml-3">Order Summary</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+    <!-- Shop Cart Section Begin -->
+    
+    <section class="shop-cart spad mt-5">
+       
+        <div class="container">
+            <div class="row">
+                <div class="col-8">
+                    
+                    <div class="card mb-3" style="max-width: 480px;border: none;">
+                        {{message}}
+                       
+                        {% for cart_item in cart_items %}
+                        <div class="row g-0">
+                          <div class="col-md-4">
+                            <img src="{{MEDIA_URL}}{{cart_item.product_color.color_image.url}}" style="height: 150px;" class="img-fluid rounded-start" alt="not working">
+                          </div>
+                          <div class="col-md-8">
+                            <div class="card-body pt-0">
+                              <h5 class="card-title">{{cart_item.product.name}}</h5>
+                              <p class="card-text"><large class="text-muted">₹{{ cart_item.product_variant.price}}</large></p>
+                              <p class="card-text"><small class="text-muted">{{ cart_item.product_variant.size}}</small></p>
+
+                              <p class="card-text"><small class="text-muted">Quantity : {{cart_item.quantity}}</small></p>
+
+                            </div>
+                           
+                        </div>
+                    
+                      </div>
+                      
+                  {% endfor %}
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                          <h5 class="card-title">Cart Total</h5>
+                        
+                          <h6 class="card-subtitle mb-2 text-muted">Sub Total( {{total}} items)
+                            <span class='pl-4'> ₹  {{sum}}</span>
+                          </h6>
+                          
+                          <a href="" class="card-link btn btn-dark ml-5">Proceed to Pay</a>
+                          
+                        </div>
+                      </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-9"></div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <div class="cart__btn">
+                        <a href="{% url 'homepage' %}">Continue Shopping</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="col-lg-6">
+                    {% if available_coupons %}
+                    <p style="color: green;"><b>available coupons:</b> </p>
+                    <ul style= "font-size: 15px;
+                    color: crimson;
+                    padding-left: 50px;
+                    padding-bottom:10px;
+                    list-style: none;">
+                    {% for coupon in available_coupons %}
+                      <li>{{coupon.description}} Apply coupon  <b>{{coupon}}</b></li> 
+                    {% endfor %}
+                    
+                  
+                </ul>
+                    <div class="discount__content">
+                        <h6>Discount codes</h6>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="text" name="coupon" placeholder="Enter your coupon code">
+                            <button type="submit" class="site-btn">Apply</button>
+                        </form>
+                         {% if order.coupon %}
+                        <p class="pt-2">Applied Coupon: <b style="color:red">{{order.coupon}} </b>
+                        <a href="{% url 'remove_coupon' order.uid %}" class="btn btn-outline-warning">Remove</a></p>
+                        {% endif %} 
+                 </div>
+                    {% endif %} 
+                </div>-->
+              
+        </div>
+    </section>
+
+      
+
+
+    
+  
+
+
+{% endblock %}
