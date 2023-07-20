@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'adminapp',
     'cart',
     'accounts',
+    'payment',
+    'order',
+    'sales',
+    
 ]
 
 MIDDLEWARE = [
@@ -141,3 +145,7 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+RAZORPAY_KEY_ID = 'rzp_test_dFh4aC1ZdKsGUq'
+RAZORPAY_KEY_SECRET = '9GSzMDArrCITVQh7oCxZSzUS'

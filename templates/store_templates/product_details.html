@@ -10,12 +10,19 @@
               <div class="row">
                   <div class="col-md-6">
                       <div class="images p-3">
-                          <div class="text-center p-4">
-                            <img id="main-image" src="{{ MEDIA_URL }}{{ product.productcolor.first.color_image.url}}" alt="not working" width="250" data-action="zoom" />
-                          </div>
-                          <div class="thumbnail text-center"> 
+                        <!-- <div id="myresult" class="img-zoom-result"></div> -->
+                          
+                <div id="img-container">
+                  <div style="border:none; display:block; position: absolute; z-index:3;" id="lens"></div>
+                   <img id="featured" src="{{ MEDIA_URL }}{{ product.productcolor.first.color_image.url}}">
+               </div>
+
+
+                          
+                          <div class="text-center"> 
+
                               {% for image in product.productcolor.all %}
-                              <img onclick="change_image(this)" src="{{ MEDIA_URL }}{{ image.color_image.url }}" width="70" data-color="{{ image.color }}"> 
+                              <img onclick="change_image(this)" src="{{ MEDIA_URL }}{{ image.color_image.url }}" width="70" data-color="{{ image.color }}" class="thumbnail"> 
                               {% endfor %} 
                           </div>
                       </div>
@@ -23,7 +30,7 @@
                   <div class="col-md-6">
                       <div class="product p-4">
                           <div class="d-flex justify-content-between align-items-center">
-                              <div class="d-flex align-items-center"> <i class="fa fa-long-arrow-left"></i> <span class="ml-1">Back</span> </div> <i class="fa fa-shopping-cart text-muted"></i>
+                              <div class="d-flex align-items-center"> <i class="fa fa-long-arrow-left"></i> <span class="ml-1"><a href={% url 'homepage' %}>Back</a></span> </div> <i class="fa fa-shopping-cart text-muted"></i>
                           </div>
                           <div class="mt-4 mb-3"> <span class="text-uppercase text-muted brand">Orianz</span>
                               <h5 class="text-uppercase">{{ product.name }}</h5>
@@ -38,10 +45,9 @@
                                    
                               </div>
                           </div>
-                          
-                          {% if product.stock >= 1 %}
                          
-                          <div class="col-4 input-group mb-3">
+                         
+                          {% comment %} <div class="col-4 input-group mb-3">
                             <button class="quantity-up-btn btn btn-outline-secondary" type="button" onclick="incrementQuantity('{{product.stock}}')">+</button>
                             
                             <input type="hidden" class="stock form-control" id="stock" value="{{product.stock}}" aria-label="" aria-describedby="basic-addon1">
@@ -53,36 +59,46 @@
                             
                           </div>
 
-                          {% else %}
-                          <p class="about"><small style="color: red;">OUT OF STOCK</small></p>
-                          {% endif %}
+                          {% else %} {% endcomment %}
+                          <p class="about" id="stockmessage"><small style="color: red;"></small></p>
+                          
+                         
                           <p class="about">Shop from a wide range of t-shirt from orianz. Pefect for your everyday use, you could pair it with a stylish pair of jeans or trousers complete the look.</p>
                           <div class="sizes mt-5">
                               <h6 class="text-uppercase">Size</h6>
                               {% for variation in product.productvariant.all %}
                               <label class="radio">
-                                 <input type="radio" name="size" value="{{variation.size}}" data-size="{{variation.size}}" onclick="get_correct_prize('{{variation.price}}')">
+                                 <input type="radio" name="size" value="{{variation.size}}" data-size="{{variation.size}}" onclick="get_correct_prize('{{variation.price}}','{{variation.pdt_stock}}')">
                                  <span id="productsize">{{variation.size}}</span>
                                
                               </label>
                               {% endfor %}
+                            
                           </div>
-                          <div class="row">
+                          
+                          <div class="row" id="buttons_row" style="display:none">
                             <div class="col-6 cart mt-4 align-items-center"> 
                                 <input type="hidden" name="productid" id="productid"  value="{{product.id}}">
                                 <input type="hidden" name="selectedsize" id="selectedsize"  value="">
                                 <input type="hidden" name="selectedprice" id="selectedprice"  value="">
                                 <input type="hidden" name="selectedcolor" id="selectedcolor"  value="">
                                 {{text}}
-                                <button class="addToCartButton btn btn-danger text-uppercase mr-2 px-4" data-id="{{product.id}}">
+
+                               
+                                <button id="addToCartButton" class="addToCartButton btn btn-danger text-uppercase mr-2 px-4" data-id="{{product.id}}">
                                 Add to cart
                                 </button>
+                                        <!-- Pop-up overlay -->
+                               
+                                
                             </div>
-                            <div class="col-6 cart mt-4 align-items-center"> 
+                            {% comment %} <div class="col-6 cart mt-4 align-items-center"> 
                               <button class="btn btn-warning text-uppercase mr-2 px-4">Buy Now</button> 
                               <i class="fa fa-heart text-muted"></i> <i class="fa fa-share-alt text-muted"></i>  
-                            </div>
+                            </div> {% endcomment %}
+                            
                           </div>
+                         
                       </div>
                   </div>
               </div>
@@ -93,9 +109,113 @@
 
 
 
+  <script type="text/javascript"  >
 
+      window.addEventListener("load", function() {
+        // Get the div element
+        let lens = document.getElementById('lens')
+        lens.style.display = "none"
+        
+        // Remove the div element from the DOM
+      
+      });
 
-
-
+      document.getElementById('img-container').addEventListener('mouseover', function(){
+          imageZoom('featured')
+          
+      })
+      document.getElementById('img-container').addEventListener('mouseout', function(){
+        let lens = document.getElementById('lens')
+        lens.style.display = "none"
+          
+      })
+      
+      function imageZoom(imgID){
+          let img = document.getElementById(imgID)
+          let lens = document.getElementById('lens')
+          lens.style.display = "block"
+          lens.style.backgroundImage = `url( ${img.src} )`
+      
+          let ratio = 5
+      
+          lens.style.backgroundSize = (img.width * ratio) + 'px ' + (img.height * ratio) + 'px';
+      
+          img.addEventListener("mousemove", moveLens)
+          lens.addEventListener("mousemove", moveLens)
+          img.addEventListener("touchmove", moveLens)
+      
+          function moveLens(){
+              /*
+              Function sets sets position of lens over image and background image of lens
+              1 - Get cursor position
+              2 - Set top and left position using cursor position - lens width & height / 2
+              3 - Set lens top/left positions based on cursor results
+              4 - Set lens background position & invert
+              5 - Set lens bounds
+          
+              */
+      
+              //1
+              let pos = getCursor()
+              //console.log('pos:', pos)
+      
+              //2
+              let positionLeft =  pos.x - (lens.offsetWidth / 2)
+              let positionTop = pos.y - (lens.offsetHeight / 2)
+      
+              //5
+              if(positionLeft < 0 ){
+                  positionLeft = 0
+              }
+      
+              if(positionTop < 0 ){
+                  positionTop = 0
+              }
+      
+              if(positionLeft > img.width - lens.offsetWidth /3 ){
+                  positionLeft = img.width - lens.offsetWidth /3
+              }
+      
+              if(positionTop > img.height - lens.offsetHeight /3 ){
+                  positionTop = img.height - lens.offsetHeight /3
+              }
+      
+      
+              //3
+              lens.style.left = 500 + positionLeft + 'px';
+              lens.style.top = positionTop + 'px';
+      
+              //4
+              lens.style.backgroundPosition = "-" + (pos.x * ratio) + 'px -' +  (pos.y * ratio) + 'px'
+          }
+      
+          function getCursor(){
+              /* Function gets position of mouse in dom and bounds
+              of image to know where mouse is over image when moved
+              
+              1 - set "e" to window events
+              2 - Get bounds of image
+              3 - set x to position of mouse on image using pageX/pageY - bounds.left/bounds.top
+              4- Return x and y coordinates for mouse position on image
+              
+              */
+      
+              let e = window.event
+              let bounds = img.getBoundingClientRect()
+      
+              //console.log('e:', e)
+              //console.log('bounds:', bounds)
+              let x = e.pageX - bounds.left
+              let y = e.pageY - bounds.top
+              x = x - window.pageXOffset;
+              y = y - window.pageYOffset;
+              
+              return {'x':x, 'y':y}
+          }
+      
+      }
+      
+      imageZoom('featured')
+</script>
 
 {% endblock content %} 

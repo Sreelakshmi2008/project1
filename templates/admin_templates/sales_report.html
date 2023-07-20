@@ -1,0 +1,27 @@
+{% extends 'admin_templates\adminpanel.html' %}
+{% load static %}
+
+
+{% block content %}
+      
+      
+        <!-- row -->
+        <div class="row tm-content-row">
+          
+          
+          <div class="col-12">
+            <h4 class="text-center alert alert-info mt-5">Sales Report of Products</h4>
+            <div class="col-6">
+                <ul class="ml-5 mr-5 alert alert-info">
+                    {% for product in products %}
+                    <li class=""><a href="{% url 'sales_report_by_product' product.id%}">{{product.name}}</a></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+          </div>
+        </div>
+        </div>
+      </div>
+     
+{% endblock content %}
+  

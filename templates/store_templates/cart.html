@@ -33,12 +33,23 @@
                           </div>
                           <div class="col-md-8">
                             <div class="card-body">
-                              <h5 class="card-title">{{product.name}}</h5>
+                              <h5 class="card-title">{{cart_item.product.name}}</h5>
                               <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.{{item.product.description}}</p>
                               <p class="card-text"><large class="text-muted">₹{{ cart_item.product_variant.price}}</large></p>
-                              <p class="card-text"><small class="text-muted">{{ cart_item.product_variant.size}}</small></p>
+                              <p class="card-text"><small class="text-muted">Size :  {{ cart_item.product_variant.size}}</small></p>
+                              <p class="card-text"><small class="text-muted">Color :  {{ cart_item.product_color.color}}</small></p>
+                              <div class="col-4 input-group mb-3">
+                              <button class="plus-btn btn btn-outline-secondary" type="button" data-id="{{cart_item.id}}" data-action='increase'>+</button>
+                            
 
-                              <p class="card-text"><small class="text-muted">Quantity : {{cart_item.quantity}}</small></p>
+                              <div class="entry value text-center mt-2" data-id="{{ cart_item.id }}" style="width: 30px;">
+                                <span class="cart_item_quantity">{{ cart_item.quantity }}</span>
+                              </div>
+                              
+                            <button class="minus-btn btn btn-outline-secondary" type="button"  data-id="{{cart_item.id}}" data-action='decrease'>-</button>
+                            
+                              </div>
+                              <!-- <p class="card-text"><small class="text-muted">Quantity : {{cart_item.quantity}}</small></p> -->
 
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
@@ -55,21 +66,45 @@
                     </div>
                 </div>
                 <div class="col-4">
+                  
+                  
+                    <div class="input-group mb-3 col-11">
+                      
+                      <input type="text" class="coupon form-control" id="coupon" name="coupon" placeholder="Coupon Code">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" id="apply-coupon-button" type="submit">Apply</button>                                        
+
+                      </div>
+                </div> 
+                <div class="col-12">
+                   {% if cart.coupon %}
+                   <span>Coupon </span>{{cart.coupon.coupon_code}}<span> applied</span>{% endif %}</div>
+                <div class="col-4">
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
                           <h5 class="card-title">Cart Total</h5>
                           <h6 class="card-subtitle mb-2 text-muted">
                             Total items:
-                            <span class="pl-3"> {{total}}</span>
+                            <span class="total_items pl-3" name="total_items"> {{total}}</span>
                         </h6>
                           <h6 class="card-subtitle mb-2 text-muted">Sub Total:
-                            <span class='pl-4'> ₹  {{sum}}</span>
+                            <span class='total_price pl-4' name="total_price"> ₹  {{sum}}</span>
                           </h6>
-                          <p class="card-text">.</p>
+                          
                           <a href="{% url 'checkout_page'   %}" class="card-link btn btn-dark ml-5">Proceed to Checkout</a>
                           
                         </div>
                       </div>
+                </div>
+                <div class="col-12">
+                  {% if cart.coupon is none %}
+                  <h4>Available coupon codes : </h4>
+                  {% for c in coupons %}
+                  {{c.coupon_code}}<br>
+                  {% endfor %}
+                  {% endif %}
+
+                </div>
                 </div>
             </div>
             <div class="row">
@@ -116,11 +151,6 @@
         </div>
     </section>
 
-      
-
-
-    
   
-
 
 {% endblock %}

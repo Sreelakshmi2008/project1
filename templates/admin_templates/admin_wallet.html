@@ -1,0 +1,49 @@
+{% extends 'admin_templates\adminpanel.html' %}
+{% load static %}
+
+
+{% block content %}
+      
+      {% comment %} <div class="col-sm-11 card-body">
+        <form action="{% url 'order_search' %}" class="d-none d-md-flex input-group w-auto my-auto" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-dark btn-outline-success" >
+              <i class="fa fa-search " aria-hidden="true"  style="color:#FFFFFF;"></i>
+            </button>
+            <input autocomplete="off" type="text" required="" class='form-control rounded border ' id="search" name="query" placeholder="Search" aria-label="search"  style="min-width: 125px;">
+        </form>
+    </div> {% endcomment %}
+        <!-- row -->
+        <div class="row tm-content-row">
+          
+          
+          <div class="col-12">
+            <h4 class="text-center alert alert-info">Wallets</h4>
+            <table class="table caption-top">
+              <!-- <caption>List of categories</caption> -->
+              <thead>
+                <tr>
+
+                  <th scope="col">User Name</th>
+                  <th scope="col">Wallet Amount</th>
+                 
+                </tr>
+              </thead>
+              <tbody>
+                  {% for w in wallets %}
+                  
+                <tr>
+                  <td>{{ w.user }}</td>
+                  <td>{{ w.wallet_amount }}</td>      
+                </tr>
+                  {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </div>
+      </div>
+     
+{% endblock content %}
+  

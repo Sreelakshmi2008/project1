@@ -14,7 +14,7 @@
                 <div class="signup-content">
                     <div class="signup-form">
                         <h2 class="form-title">Sign up</h2>
-                        <form method="POST">
+                        <form method="POST"  onsubmit="return validateForm()">
                             {% csrf_token %}
                             <div class="form-group">
                                 <label for="email"><i class="zmdi zmdi-account material-icons-name"></i></label>
@@ -22,7 +22,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="name" id="name" placeholder="name"/>
+                                <input type="text" name="name" id="name" placeholder="name" required/>
                             </div>
                             <div class="form-group">
                                 <label for="phone_number"><i class="zmdi zmdi-account material-icons-name"></i></label>
@@ -40,6 +40,8 @@
                             <div class="form-group form-button">
                                 <span> <input type="submit" name="signup" id="signup" class="form-submit" value="sign up"/>
                                 <a href="{% url 'signin' %}" class="signup-image-link">I am already member</a></span>
+                                <span id="name-error" style="display: none; color: red;">Name is required and should not contain numbers.</span>
+
                             </div>
                             
                         </div> 
@@ -61,4 +63,21 @@
     
 </div>
 
+
+
+<script>
+    function validateForm() {
+      var nameField = document.getElementById("name");
+      var nameError = document.getElementById("name-error");
+      var nameRegex = /^[a-zA-Z\s]+$/;
+    
+      if (nameField.value === "" || !nameRegex.test(nameField.value)) {
+        nameError.style.display = "block";
+        return false;
+      } else {
+        nameError.style.display = "none";
+        return true;
+      }
+    }
+</script>
    {% endblock %}

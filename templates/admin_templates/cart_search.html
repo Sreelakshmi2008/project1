@@ -1,0 +1,58 @@
+{% extends 'admin_templates\adminpanel.html' %}
+{% load static %}
+
+
+{% block content %}
+      
+     
+        <!-- row -->
+        <div class="row tm-content-row">
+          
+         
+
+          <div class="col-sm-12">
+            <h4 class="text-center alert alert-info">CARTS</h4>
+            <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">User</th>
+            <th scope="col">Created at</th>
+            <th scope="col">Updated at</th>
+            <th scope="col">Coupon applied</th>
+         
+            
+          </tr>
+        </thead>
+        <tbody>
+        {% for cart in cart %}
+          <tr>
+            <th scope="row">{{cart.id}}</th>
+            <th><a href="{% url 'admin_cart_by_user' cart.id %}" style="color:maroon">{{cart.user}}</th>
+
+            <td>{{cart.created_at}}</td>
+            <td>{{cart.updated_at}}</td>
+            <td>{% if cart.coupon %}
+              {{cart.coupon.coupon_code}}
+              {% else %}
+              No Coupon applied
+              {% endif%}
+            </td>
+           
+           
+            
+          </tr>
+        {% endfor %}
+      
+            </table>
+            <div class="d-flex justify-content-center">
+              <a href="{% url 'admin_cart' %}" class="btn btn-info" >Back to Carts</a>
+            </div>
+
+          </div>
+        </div>
+        </div>
+      </div>
+     
+{% endblock content %}
+  

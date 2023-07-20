@@ -1,6 +1,7 @@
 from django.db import models
 from accounts.models import CustomUser
-from adminapp.models import Product,Size,Color,ProductVariant,ProductColor
+from adminapp.models import *
+from payment.models import *
 
 
 # creating a cart for a user
@@ -8,6 +9,9 @@ from adminapp.models import Product,Size,Color,ProductVariant,ProductColor
 class Cart(models.Model):
     user= models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True)
     products = models.ManyToManyField(Product, through='CartItem')
+    coupon = models.ForeignKey(Coupon,on_delete=models.SET_NULL,null=True,related_name="cart_coupon")
+    cart_total = models.DecimalField(max_digits=8, decimal_places=2,null=True)
+    coupon_total =models.DecimalField(max_digits=8, decimal_places=2,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -18,6 +22,9 @@ class Cart(models.Model):
     
     def get_total_products(self):
         return sum(item.quantity for item in self.cart_items.all())
+        
+    
+    
     
     # def get_total_quantity(self):
     #     return sum(item.quantity for item in self.cart_items.all())

@@ -5,7 +5,7 @@
 {% block content %}
       
       <div class="col-sm-11 card-body">
-        <form action="" class="d-none d-md-flex input-group w-auto my-auto" method="post">
+        <form action="{% url 'cart_search' %}" class="d-none d-md-flex input-group w-auto my-auto" method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-dark btn-outline-success" >
               <i class="fa fa-search " aria-hidden="true"  style="color:#FFFFFF;"></i>
@@ -16,14 +16,19 @@
         <!-- row -->
         <div class="row tm-content-row">
           
-          <div class="col-sm-3">
-            <h4 class="text-center alert alert-info">CART</h4>
+         
+
+          <div class="col-sm-12">
+            <h4 class="text-center alert alert-info">CARTS</h4>
             <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">ID</th>
             <th scope="col">User</th>
             <th scope="col">Created at</th>
+            <th scope="col">Updated at</th>
+            <th scope="col">Coupon applied</th>
+         
             
           </tr>
         </thead>
@@ -31,61 +36,18 @@
         {% for cart in cart %}
           <tr>
             <th scope="row">{{cart.id}}</th>
-          
-            <td>{{cart.user}}</td>
-            <td>{{cart.created_at}}</td>
-          </tr>
-        {% endfor %}
-      
-            </table>
-          </div>
+            <th><a href="{% url 'admin_cart_by_user' cart.id %}" style="color:maroon">{{cart.user}}</th>
 
-          <div class="col-sm-9">
-            <h4 class="text-center alert alert-info">CART-ITEMS</h4>
-            <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">User</th>
-            <th scope="col">Cart</th>
-            <th scope="col">Product</th>
-            <th scope="col">Size</th>
-            <th scope="col">Color</th>
-            <th scope="col">Quantity</th>
-            
-          </tr>
-        </thead>
-        <tbody>
-        {% for item in cartitems %}
-          <tr>
-            <th scope="row">{{item.id}}</th>
-            <td>{{item.user}}</td>
-           
-            <td>
-              {% for cart_items in item.cart_items.all %}
-              {{cart_items.cart}}<br>
-            {% endfor %}
-          </td>
-            <td>
-              {% for cart_items in item.cart_items.all %}
-              {{cart_items.product}}<br>
-            {% endfor %}</td>
-            <td>
-              {% for cart_items in item.cart_items.all %}
-              {{cart_items.product_variant}}<br>
-            {% endfor %}
-          </td>
-            <td>
-              {% for cart_items in item.cart_items.all %}
-              {{cart_items.product_color}}<br>
-            {% endfor %}
-              
+            <td>{{cart.created_at}}</td>
+            <td>{{cart.updated_at}}</td>
+            <td>{% if cart.coupon %}
+              {{cart.coupon.coupon_code}}
+              {% else %}
+              No Coupon applied
+              {% endif%}
             </td>
-            <td>
-              {% for cart_items in item.cart_items.all %}
-              {{cart_items.quantity}}<br>
-            {% endfor %}
-              </td>
+           
+           
             
           </tr>
         {% endfor %}

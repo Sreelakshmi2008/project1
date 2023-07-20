@@ -1,0 +1,89 @@
+
+{% extends 'admin_templates\adminpanel.html' %}
+{% load static %}
+  {% block content %}
+
+  {% comment %} <div class="col-sm-11 card-body">
+    <form action="{% url 'product_search' %}" class="d-none d-md-flex input-group w-auto my-auto" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-dark btn-outline-success" >
+          <i class="fa fa-search " aria-hidden="true"  style="color:#FFFFFF;"></i>
+        </button>
+        <input autocomplete="off" type="text" required="" class='form-control rounded border ' id="search" name="query" placeholder="Search" aria-label="search"  style="min-width: 125px;">
+    </form>
+</div> {% endcomment %}
+    <div class="container mt-5">
+      <p style="color: white; font-size: 20px;">PRODUCT NAME - {{product.name}} 
+        <span>
+          <a href="{% url 'add_product_variant' product.id  %}"><i class="fa fa-plus float-left mr-5" style="width: 50px;">Add Sizes </i></a>
+        </span>  </p> 
+       
+         
+              
+  
+      <div class="row tm-content-row">
+        <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col">
+          <div class="tm-bg-primary-dark tm-block tm-block-products">
+            <div class="">
+              <table class="table table-hover tm-table-small tm-product-table">
+                <thead>
+                  <tr>
+
+                    <th scope="col">&nbsp;</th>
+                    
+                  
+                    <th scope="col">SIZE</th>
+                    <th scope="col">PRICE</th>
+                    <th scope="col">STOCK</th>
+                    <th scope="col">EDIT</th>
+                    <th scope="col">DELETE</th>
+                  </tr>
+                </thead>
+               
+                <tbody>
+                  {% for variant in product.productvariant.all %}
+                  <tr>
+                    
+                    <th scope="col">&nbsp;</th>
+                    
+                  
+                    <td>{{variant.size}}</td>
+                    <td>{{variant.price}}</td>
+                    <td>{{variant.pdt_stock}}</td>
+                    <td><a href="{% url 'edit_pdt_variant' variant.id %}"><i class="fas fa-edit" style="color:cyan"></i></a></td>
+                    <td><a href="{% url 'delete_pdt_variant' variant.id %}"><i class="fas fa-trash" style="color:cyan"></i></a></td>
+                    
+                    
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              
+                      
+              </table>
+            
+
+            </div>
+            
+            <!-- table container -->
+        
+         
+        </div>
+      
+         
+         
+           
+          </div>
+         
+        </div>
+
+      
+        
+      </div>
+      
+      
+
+      <
+               
+
+      </div>
+    {% endblock content %}

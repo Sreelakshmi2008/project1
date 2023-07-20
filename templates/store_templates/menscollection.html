@@ -4,8 +4,21 @@
 
 {% block content %}
 
+
+<div class="row">
+<div class="col-2">
+
+   <form method="GET" action="{% url 'menscollection' %}">
+      {% csrf_token %}
+     {{ price_filter_form.as_p }}
+     <button type="submit" class="ml-5 btn btn-info">Filter</button>
+ </form>
+</div>
+
+<div class="col-9">
 <div class="fashion_section">
     <h1 class="fashion_taital pt-5">Mens Collections</h1>
+    
     <div id="main_slider" class="carousel slide" data-ride="carousel">
        <div class="carousel-inner">
           
@@ -13,7 +26,7 @@
           <div class="carousel-item active">
              
              <div class="container">
-                
+              
                 <div class="fashion_section_2">
                    <div class="row">
                       {% for product in product %}
@@ -21,11 +34,16 @@
                       <div class="col-lg-4 col-sm-4">
                          <div class="box_main">
                             <h4 class="shirt_text">{{product.name}}</h4>
-                            <h4 class="shirt_text">{{product.description}}</h4>
+                            {% comment %} <h4 class="shirt_text">{{product.description}}</h4> {% endcomment %}
                             <p class="price_text"><span style="color: #262626;">₹{{product.productvariant.first.price}}</span></p>
-                            <div class="tshirt_img"><img src="{{ MEDIA_URL }}{{ product.productcolor.first.color_image.url }}" alt="not working"></div>
+                            <div class="tshirt_img">
+                              
+                              <a href="{% url 'product_details' product.id %}">
+                                 <img src="{{ MEDIA_URL }}{{ product.productcolor.first.color_image.url }}" alt="not working">
+                              </a>
+                           </div>
                             <div class="btn_main">
-                               <div class="buy_bt"><a href="#">Buy Now</a></div>
+                               <!-- <div class="buy_bt"><a href="#">Buy Now</a></div> -->
                                <div class="seemore_bt"><a href="{% url 'product_details' product.id %}">See More</a></div>
                             </div>
                          </div>
@@ -38,14 +56,19 @@
          
           
        </div>
-       <a class="carousel-control-prev" href="#main_slider" role="button" data-slide="prev">
+       {% comment %} <a class="carousel-control-prev" href="#main_slider" role="button" data-slide="prev">
        <i class="fa fa-angle-left"></i>
        </a>
        <a class="carousel-control-next" href="#main_slider" role="button" data-slide="next">
        <i class="fa fa-angle-right"></i>
-       </a>
+       </a> {% endcomment %}
     </div>
  </div>
+
+</div>
+</div>
  <!-- fashion section end -->
 
-{% endblock content %}
+
+
+ {% endblock content %}

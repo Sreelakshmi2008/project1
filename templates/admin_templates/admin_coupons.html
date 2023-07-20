@@ -1,0 +1,45 @@
+{% extends 'admin_templates\adminpanel.html' %}
+{% load static %}
+
+
+{% block content %}
+      
+      {% comment %} <div class="col-sm-11 card-body">
+        <form action="{% url 'cart_search' %}" class="d-none d-md-flex input-group w-auto my-auto" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-dark btn-outline-success" >
+              <i class="fa fa-search " aria-hidden="true"  style="color:#FFFFFF;"></i>
+            </button>
+            <input autocomplete="off" type="text" required="" class='form-control rounded border ' id="search" name="query" placeholder="Search" aria-label="search"  style="min-width: 125px;">
+        </form>
+    </div> {% endcomment %}
+        <!-- row -->
+        <div class="row tm-content-row mt-5">
+          
+         
+
+          <div class="col-12">
+            <h4 class="text-center alert alert-info">COUPONS
+                <a href="{% url 'add_coupon' %}"><i class="fa fa-plus float-right" style="width: 90px;"></i></a>
+            </h4>
+            
+            <div class="col-6">
+            <ul class="ml-5 mr-5 alert alert-info">
+                {% for coupon in coupons %}
+                <li class="pt-4">
+                  <a href="{% url 'admin_coupon_edit' coupon.id %}">{{coupon.coupon_code}}</a>
+                  <a href="{% url 'delete_coupon' coupon.id %}" class="ml-5">
+                    <i class="far fa-trash-alt"></i>
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          
+          </div>
+        </div>
+        </div>
+      </div>
+     
+{% endblock content %}
+  

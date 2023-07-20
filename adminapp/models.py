@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils.text import slugify
 
 # category of prodcut
 class Category(models.Model):
@@ -39,13 +39,19 @@ class Color(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE,null=True)
     subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE,null=True)
+    
     name = models.CharField(max_length=255)
+    
     description = models.TextField()
     # image = models.ImageField(upload_to='product_images/')
-    stock = models.PositiveIntegerField(default=0)
+    # stock = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.name}-{self.subcategory.name}"
+    
+
+    
+
 
 
 # product size variant with price
@@ -55,6 +61,7 @@ class ProductVariant(models.Model):
     # color = models.ForeignKey(Color, on_delete=models.CASCADE)
     # color_image = models.ImageField(upload_to='product_images/')
     price = models.DecimalField(max_digits=8, decimal_places=2)
+    pdt_stock = models.PositiveIntegerField(default=0)
   
     def __str__(self):
         return f"{self.product.name} - Size: {self.size.name}"

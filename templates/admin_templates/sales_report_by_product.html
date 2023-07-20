@@ -1,0 +1,58 @@
+{% extends 'admin_templates\adminpanel.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+
+
+
+
+
+
+        <!-- row -->
+        <div class="row tm-content-row">
+          
+          
+          <div class="col-12">
+            <h4 class="text-center alert alert-info">Sales Report of {{product.name}} (ID - {{product.id}} )</h4>
+           
+           
+            <table class="table caption-top col-6 ml-5" id="sales_table">
+             <h3 class="ml-5" style="color: white;">Sales Report of {{product.name}} (ID - {{product.id}} )</h3>
+              <thead>
+                <tr>               
+                  <th scope="col">Number of products delivered</th>
+                  <th scope="col">Number of orders delivered</th>
+                  <th scope="col">Stock Remaining</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="delivered_quantity">{{ delivered_quantity }}</td>
+                  <td id="number_delivered_orders">{{ number_delivered_orders }}</td>
+                  <td id="stock_remianing">{{total_stock}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Add the following code to add the "Download Excel" button -->
+          <div class="row ml-5">
+        <div class="text-center mt-3 col-6">
+            <a onclick="exportTableToExcel('sales_table','sales_report_by_product')" id="download_excel" class="btn btn-success">Download Excel</a>
+        </div>
+        <div class="text-center mt-3 col-6">
+            <a onclick="exportTableToPDF('sales_table','sales_report_by_product')" id="download_pdf" class="btn btn-success">Download Pdf</a>
+        </div>
+          </div>
+        
+        </div>
+        </div>
+      </div>
+
+    
+     
+{% endblock content %}
+  

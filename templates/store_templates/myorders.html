@@ -1,0 +1,76 @@
+{% extends 'store_templates\homepage.html' %}
+{% load static %}
+
+
+{% block content %}
+      
+     
+        <!-- row -->
+        
+        <section class="sign-in pt-3 mt-4 mb-5">
+          
+          <h4 class="text-center pt-3" style="background-color: #252525;color: white; height: 50px;">Your Orders</h4>
+    
+            
+            {% if orders %}
+        <div class="row  mb-5 ml-5 mr-5 ">
+        
+
+            <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Order No.</th>
+                      
+                      <th scope="col">Total Price</th>
+                      <th scope="col">Toatl Products</th>
+                    
+                      <th scope="col">Payment Status</th>
+                      <th scope="col">Order Status</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  
+                      {% for order in orders %}
+                      
+                        <tr>          
+                          <td><a href="{% url 'myorders_products' order.id %}">
+                            {{order.order_number}}</a>
+                          </td>
+                          <td>₹  {{order.order_total}}</td>
+                          <td>{{order.payment.payment_method}}-{% if order.payment.status %}
+                              paid
+                              {% else %}
+                              Not paid
+                              {% endif %}
+                          </td>
+                          <td style="color: {% if order.status == 'New' %}blue{% elif order.status == 'Pending' %}orange{% elif order.status == 'Shipped' %}brown{% elif order.status == 'Delivered' %}green{% elif order.status == 'Cancelled' %}red{% endif %}">
+                            {{order.status}}</td>
+                          
+                            <td>
+                              {% if order.status == 'Delivered' or order.status == 'Cancelled' %}
+                              {% else %}
+                              <form method="post" action="{% url 'order_cancel' order.id %}">
+                                {% csrf_token %}
+                                {{reason_form.as_p}}
+                          
+                                <button class="btn btn-danger" type="submit">Cancel Order</button>
+                              </form>
+
+                              {% endif %}
+                            </td>
+                        </tr>
+                      {% endfor %}
+                  </tbody>
+            </table>
+                
+        </div>
+            {% else %}
+            <h3 class="text-center pt-3 pl-5">No orders</h3>
+            {% endif %}
+   
+      </div>
+    </section>
+     
+{% endblock content %}
+  

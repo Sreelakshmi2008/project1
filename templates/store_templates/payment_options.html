@@ -1,0 +1,47 @@
+
+{% extends 'store_templates\homepage.html' %}
+{% load static %}
+
+    
+{% block content %}
+   
+ 
+
+<p>order :</p>{{order_id}}
+{{amount}}
+
+
+
+<button onclick="payWithRazorpay()">Pay with Razorpay</button>
+
+<script>
+    function payWithRazorpay() {
+        console.log("entered razorpay")
+        var options = {
+            "key": "{{ razorpay_key }}",
+            "amount": "{{ amount }}",
+            "currency": "INR",
+            "name": "Your Company Name",
+            "description": "Payment for Order",
+            "order_id": "{{ order_id }}",
+            "handler": function (response) {
+                // Handle the payment success callback
+                console.log(response);
+            },
+            
+            "prefill": {
+                "name": "John Doe",
+                "email": "john@example.com",
+                "contact": "9999999999"
+            }
+        };
+        console.log(options)
+
+        var rzp1 = new Razorpay(options);
+        console.log("yess")
+        rzp1.open();
+    }
+</script>
+
+
+ {% endblock content %}

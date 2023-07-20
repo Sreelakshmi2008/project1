@@ -1,0 +1,32 @@
+{% extends 'admin_templates\adminpanel.html' %}
+{% load static %}
+
+
+{% block content %}
+      
+     
+        <!-- row -->
+        <div class="row tm-content-row">
+          
+         
+
+          <div class="col-12">
+            <h4 class="text-center alert alert-info">COUPON - {{coupon.coupon_code}}</h4>
+           <div class="col-6">
+           <form method="post">
+            {% csrf_token %}
+            {{fm.as_p}}
+            <div class="col-4  m-auto">
+            <button type="submit">Save Changes</button>
+            </div>
+            </form>
+           </div>
+           <a class="btn btn-light ml-3 mt-5" href="{% url 'admin_coupons' %}">Back to Coupon List</a>
+          
+          </div>
+        </div>
+        </div>
+      </div>
+     
+{% endblock content %}
+  

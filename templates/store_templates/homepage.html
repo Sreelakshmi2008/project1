@@ -45,9 +45,74 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
 
 
-      <!-- zoom images css and js  -->
-      <link href="{% static 'homepage/css/zoom.css' %}" rel="stylesheet">
+      <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+
+    
+      
      
+<!-- razorpay js -->
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+
+      <style>
+               /* Styling for the pop-up overlay */
+            .overlay {
+               display: none;
+               position: fixed;
+               top: 0;
+               left: 0;
+               width: 100%;
+               height: 100%;
+               background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+               z-index: 9999; /* ensures the overlay is on top of other elements */
+            }
+
+            /* Styling for the pop-up content */
+            .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            
+            padding: 20px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            text-align: center;
+            z-index: 10000; /* ensures the pop-up is on top of the overlay */
+            }
+
+   
+            #img-container{
+               z-index: 1;
+               max-width: 600px;
+               position: relative;
+               display:flex;
+               justify-content: center;
+               align-items: center;
+               border: solid 1px #e8e8e8;
+               box-shadow: 0px 1px 5px rgba(0,0,0,0.1);
+           }
+           
+           #lens{
+               z-index: 2;
+               position: absolute;
+           
+               height: 400px;
+               width: 400px;
+               border:2px solid black;
+               background-repeat: no-repeat;
+               cursor: none;
+           
+           }
+           
+      
+      </style>
+
+
    </head>
    <body>
       
@@ -58,14 +123,35 @@
          <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                <a class="navbar-brand" href="{% url 'homepage' %}">
-                <img src="{% static 'homepage\images\Black logo - no background.png' %}" class="img-fluid" style="height:80px">
+                <img src="{% static 'homepage\images\Black logo - no background.png' %}" class="img-fluid" style="height:60px">
                </a>
+
+                <!-- search bar starts -->
+             
+              
+                  <form method="post" action="{% url 'search_product' %}">
+                     {% csrf_token %}
+                  <div class="input-group">
+                  <input type="text" class="form-control" id="query" name="query" placeholder="Search Products">
+                  <div class="input-group-prepend">
+                     <button class="input-group-text" id="basic-addon1" type="submit"><i class="fa fa-search"></i></button>
+                   </div>
+                  </div>
+                  </form>
+                 
+             
+
+               <!-- search bar starts -->
             </div>
                
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
-              <div class="col-sm-8">
+
+
+             
+
+              <div class="col-sm-8 float-left">
                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                      <button class="btn btn-secondary dropdown-toggle mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Category 
@@ -83,14 +169,14 @@
 
                   <a class="nav-link active mr-2" href="{% url 'womencollection' %}">Ladies collection</a>
                   
-                  <a class="nav-link active mr-2" href="#">Trending collections</a>
+                  <a class="nav-link active mr-2" href="{% url 'user_wishlist' %}">WishList</a>
                   
                   <a href="{% url 'cart' %}" class="mr-3 pt-1">
                      <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                      <span class="padding_5">Cart</span></a>
                
                   {% if user.is_authenticated %}
-                  <a href="{% url 'userprofile' %}" class="nav-link active mr-3">Hi,{{name}}</a>
+                  <a href="{% url 'userprofile' %}" class="nav-link active mr-3">Hi,{{user.name}}</a>
                   <a href="{% url 'signout' %}" class="nav-link active mr-3">Signout</a>
                   
                   {% else %}
@@ -103,13 +189,13 @@
                 </div>
                </div>
               </div>
-            
+              
           </nav>
         {% block content %}
        
-      
+      </div>
       <!-- banner bg main end -->
-      <div class="container mt-5">
+      <div class="container mt-5 pt-5">
          <div class="row align-items-center">
            <div class="col-6">
              <img src="{% static 'homepage\images\Untitled.jpg' %}" class="" alt="Circular Image">
@@ -135,15 +221,15 @@
                            <div class="col-lg-4 col-sm-4">
                               <div class="box_main">
                                  <h4 class="shirt_text">{{product.name}}</h4>
-                                 <h4 class="shirt_text">{{product.description}}</h4>
+                                 {% comment %} <h4 class="shirt_text">{{product.description}}</h4> {% endcomment %}
                                  <p class="price_text"><span style="color: #262626;">₹{{product.productvariant.first.price}}</span></p>
                                  <div class="tshirt_img">
-                                    <a href="{% url 'product_details' product.id %}">
+                                    <a href="{% url 'product_details'  product.id %}">
                                     <img src="{{ MEDIA_URL }}{{ product.productcolor.first.color_image.url }}" alt="not working" >
                                     </a>
                                  </div>
                                  <div class="btn_main">
-                                    <div class="buy_bt"><a href="#">Buy Now</a></div>
+                                    <div class="buy_bt"><a href="{% url 'addToWishlist' product.id %}">Add to Wishlist</a></div>
                                     <div class="seemore_bt"><a href="{% url 'product_details' product.id %}">See More</a></div>
                                  </div>
                               </div>
@@ -154,12 +240,12 @@
                   </div>
                </div>
             </div>
-            <a class="carousel-control-prev" href="#main_slider" role="button" data-slide="prev">
+            {% comment %} <a class="carousel-control-prev" href="#main_slider" role="button" data-slide="prev">
             <i class="fa fa-angle-left"></i>
             </a>
             <a class="carousel-control-next" href="#main_slider" role="button" data-slide="next">
             <i class="fa fa-angle-right"></i>
-            </a>
+            </a> {% endcomment %}
          </div>
       </div>
       <!-- fashion section end -->
@@ -169,7 +255,8 @@
 
 
       <!-- footer section start -->
-      <div class="footer_section layout_padding">
+   
+      <div class="footer_section layout_padding mt-5">
         
             <div class="footer_menu">
                <ul>
@@ -187,7 +274,7 @@
 
 
       <!-- copyright section start -->
-      <div class="copyright_section">
+      <div class="copyright_section mb-0">
          <div class="container">
             <p class="copyright_text">© 2023 All Rights Reserved. </p>
          </div>
@@ -197,6 +284,13 @@
 
 
       <!-- Javascript files-->
+
+      <!-- zoom -->
+      <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+      <script src="{% static 'homepage\js\jquery.exzoom.js' %}"></script>
+
+
+
       <script src="{% static 'homepage/js/jquery.min.js' %}"></script>
       <script src="{% static 'homepage/js/popper.min.js' %}"></script>
       <script src="{% static 'homepage/js/bootstrap.bundle.min.js' %}"></script>
@@ -209,6 +303,25 @@
       <script src="{% static 'homepage/js/custom.js' %}"></script>
 
 
+
+      <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+      <script>
+          var availableTags = [];
+          $.ajax({
+            method: "GET",
+            url:"/products-list",
+            success:function(response){
+               console.log("response")
+
+            }
+          });
+     
+   
+    $( "#searchproducts" ).autocomplete({
+      source: availableTags
+    });
+   
+      </script>
       <script>
          function openNav() {
            document.getElementById("mySidenav").style.width = "250px";
@@ -222,8 +335,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-        <script src="{% static 'signup/vendor\jquery\jquery.min.js' %}"></script>
-        <script src="{% static 'signup/js\main.js' %}"></script>
+        <script src="{% static 'signup\vendor\jquery\jquery.min.js' %}"></script>
+        <script src="{% static 'signup\js\main.js' %}"></script>
 
 
 
@@ -231,21 +344,42 @@
         <script>
         // change image in individual product page  while clicking
          function change_image(image){
-            var container = document.getElementById("main-image");
+            var container = document.getElementById("featured");
             container.src = image.src;
             var selectedcolor = document.getElementById("selectedcolor");
                selectedcolor.value= image.dataset.color;
          }
-
+           // Select the first image in the thumbnail list by default
+            window.addEventListener('DOMContentLoaded', function() {
+               var thumbnailImages = document.querySelectorAll('.thumbnail');
+               if (thumbnailImages.length > 0) {
+               var firstImage = thumbnailImages[0];
+               change_image(firstImage);
+               }
+            });
 
 
          // show correct price when user select a size
-         function get_correct_prize(price){
+         function get_correct_prize(price,stock){
             var pricecontainer = document.getElementById("current_price");
             pricecontainer.textContent = price;
             
                var selectedprice = document.getElementById("selectedprice");
                selectedprice.value = price;
+               if(stock < 1){
+                  var stockMessage = document.getElementById('stockmessage')
+                  stockMessage.textContent = "OUT OF STOCK"
+                  var buttons_row = document.getElementById('buttons_row')
+                  buttons_row.style.display = 'none'
+
+               }
+               else{
+                  var stockMessage = document.getElementById('stockmessage')
+                  stockMessage.textContent = "IN STOCK"
+                  var buttons_row = document.getElementById('buttons_row')
+                  buttons_row.style.display = 'block'
+               }
+           
             
             var selectedSizeInput = document.querySelector('input[name="size"]:checked');
                if (selectedSizeInput) {
@@ -290,16 +424,21 @@
       //  add to cart button ajax
        $(".addToCartButton").on('click', function() {
             console.log("add to cart button clicked")
-
+            
             var productid = document.getElementById("productid").value;
             var selectedcolor = document.getElementById("selectedcolor").value;
             var selectedsize = document.getElementById("selectedsize").value;
             var selectedprice = document.getElementById("selectedprice").value;
-            var selectedquantity = document.getElementById("quantity").value;
+            // {% comment %} var selectedquantity = document.getElementById("quantity").value; {% endcomment %}
+
+            if(!selectedsize || !selectedcolor){
+               alert("Size and Color are Mandatory")
+            }
+            
           
             console.log(productid)
 
-            data = {"productid" : productid,"selectedcolor":selectedcolor,"selectedsize":selectedsize,"selectedprice":selectedprice,"selectedquantity":selectedquantity}
+            data = {"productid" : productid,"selectedcolor":selectedcolor,"selectedsize":selectedsize,"selectedprice":selectedprice}
 
             $.ajax({
                url:"{% url 'add_to_cart' %}",
@@ -310,6 +449,9 @@
                   console.log("code run success")
                   console.log(data.status)
                   console.log(data.message)
+                  alert("Added to Cart")
+                  // Get the button element
+                  $(".addToCartButton").css("background-color", "blue");
                }
             })
 
@@ -319,29 +461,235 @@
  </Script>
 
 
- <!--    <script>
-        // Function to increment the quantity
-        function incrementQuantity(productId) {
-         console.log(productId)
-          var quantityField = document.getElementById('quantity');
-          console.log(quantityField.value)
-          quantityField.value = parseInt(quantityField.value);
-          var max = document.getElementById('pdt-stock').value
-          if (quantityField.value < max){
-            quantityField.value = parseInt(quantityField.value) + 1;
-          }
-        }
-      
-        // Function to decrement the quantity
-        function decrementQuantity(productId) {
-          var quantityField = document.getElementById('quantity');
-          if (parseInt(quantityField.value) > 1) {
-            quantityField.value = parseInt(quantityField.value) - 1;
-          }
-        }
-        document.addEventListener("DOMContentLoaded", function(event) {});
-       
-      </script> -->
 
+
+<script>
+   $('.plus-btn').on('click', function() {
+console.log("plus function working")
+var cartItemId = $(this).data('id');
+var action = $(this).data('action');
+console.log(cartItemId)
+updateCartItemQuantity(cartItemId, action);
+
+});
+
+$('.minus-btn').on('click', function() {
+console.log("minus function working")
+var cartItemId = $(this).data('id');
+var action = $(this).data('action');
+console.log(cartItemId)
+updateCartItemQuantity(cartItemId, action);
+
+});
+
+
+function updateCartItemQuantity(cartItemId, action) {
+		$.ajax({
+		  url: "{% url 'update_cart_item_quantity' %}",
+		  method: 'GET',
+		  data: {
+			cart_item_id: cartItemId,
+			action: action
+		  },
+		  success: function(response) {
+			if (response.status === 200) {
+			  // Update the quantity value in the template
+			  var quantitySpan = $('.value[data-id="' + cartItemId + '"] span');
+           var totalItems = $('.total_items');
+			  quantitySpan.text(response.quantity);
+           totalItems.text(response.total_items);
+           var priceSpan = $('.total_price');
+	        priceSpan.text(response.total);
+           
+			  
+			}
+		  }
+		});
+	  }
+	
+  
+
+</script>
+
+
+
+<!-- default address selecting by user -->
+
+<script>
+   function submitForm() {
+     
+      console.log("entered")
+  var f = document.getElementsByClassName("addressform")
+  var checkboxs = document.getElementsByClassName("my_checkbox");
+  var checkbox = checkboxs[0];
+  console.log(checkbox)
+  
+  var inputValue = checkbox.checked ? "True" : "False";
+  console.log(inputValue)
+  checkbox.value = inputValue;
+   
+}
+
+</script>
+ 
+
+
+
+
+
+<!-- passing detials from check out page to place_order url -->
+      
+<script>
+         // cash on delivery success message pop up
+      function displayPopup(id,amount) {
+            var overlay = document.getElementById("overlay");
+            var popup = document.getElementById("popup");
+            var cod_order_id = document.getElementById("cod_order_id");
+            var cod_amount_to_be_paid = document.getElementById("cod_amount_to_be_paid");
+            overlay.style.display = "block";
+            popup.style.display = "block";
+            cod_order_id.innerHTML = id;
+            cod_amount_to_be_paid.innerHTML = amount;
+
+          }
+      
+
+      //         function closePopup() {
+      // var overlay = document.getElementById("overlay");
+      // var popup = document.getElementById("popup");
+      // overlay.style.display = "none";
+      // popup.style.display = "none";
+      //         }
+
+   
+
+   $(".proceed_button").on('click', function() {
+      console.log("proceed button clicked")
+      var dropdown = document.getElementById("myDropdown");
+      var selectedOption = dropdown.options[dropdown.selectedIndex].value;
+
+      var defaultAddressId = "{{ default_address.id }}";  // Retrieve the default address ID from the Django template variable
+
+      if(!defaultAddressId){
+         alert("Address is Mandatory")
+      }
+      if(!selectedOption){
+         alert("Choose a Payment Method")
+      }
+      $.ajax({
+        type: "GET",
+        url: "{% url 'place_order' %}",  // Replace 'place_order' with the actual URL of your view
+        data: {
+          
+          'defaultAddressId': defaultAddressId,
+          'selectedOption':selectedOption,
+         
+        },
+        success: function(data) {
+                  console.log("code run success")
+               
+                  console.log(data.message)
+                  if( data.flag===1){
+                     displayPopup(data.id,data.amount)
+                  }
+                  if (data.redirect) {
+                     // Redirect to the specified URL
+                     window.location.href = data.redirect ;
+                     
+                  } else {
+                     // Handle other response data
+                     // ...
+                     console.log("no redirect")
+                  }
+               }
+        
+        
+      });
+   })
+
+</script>
+
+
+<!-- wallet pay button ajx -->
+<script>
+      $(".wallet_pay").on('click', function() {
+      console.log("wallet button clicked")
+      
+      var defaultAddressId = "{{ default_address.id }}";  // Retrieve the default address ID from the Django template variable
+
+      if(!defaultAddressId){
+         alert("Address is Mandatory")
+      }
+      
+      $.ajax({
+        type: "GET",
+        url: "{% url 'wallet_pay' %}",  // Replace 'place_order' with the actual URL of your view
+        data: {
+          
+          'defaultAddressId': defaultAddressId,
+         
+         
+        },
+        success: function(data) {
+                  console.log("code run success")
+               
+                  console.log(data.message)
+                  
+                  if (data.redirect) {
+                     // Redirect to the specified URL
+                     window.location.href = data.redirect ;
+                     
+                  } else {
+                     // Handle other response data
+                     // ...
+                     console.log("no redirect")
+                  }
+               }
+        
+        
+      });
+   })
+
+</script>
+
+<!-- coupon apply ajax -->
+<script>
+      $('#apply-coupon-button').click(function() {
+      console.log("button clicked");
+      var url = "{% url 'apply_coupon' %}";
+
+      var coupon = $('#coupon').val();
+      console.log(coupon);
+      // var couponId = $('#coupon-id');
+      // console.log(couponId);
+     
+      var totalPrice = parseInt($('.total_price').text().replace('₹ ', ''));
+      console.log(totalPrice);
+     
+      $.ajax({
+        url: url,
+        type: 'GET',
+        
+        data: {
+         'coupon': coupon,
+         'totalPrice':totalPrice
+        },
+        success: function(response) {
+         console.log(response)
+         if (response) {
+           
+           $('.total_price').text('₹ ' + response.total);
+           confirm(response['message'])
+           const couponInput = document.getElementById('coupon');
+           couponInput.value = '';
+         }
+        },
+        error: function() {
+         console.log('Error');
+         confirm(response['message'])
+        }
+      });
+     })
+</script>
    </body>
 </html>

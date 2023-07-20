@@ -1,0 +1,56 @@
+{% extends 'admin_templates\adminpanel.html' %}
+{% load static %}
+
+
+{% block content %}
+{% comment %}       
+      <div class="col-sm-11 card-body">
+        <form action="{% url 'cart_search' %}" class="d-none d-md-flex input-group w-auto my-auto" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-dark btn-outline-success" >
+              <i class="fa fa-search " aria-hidden="true"  style="color:#FFFFFF;"></i>
+            </button>
+            <input autocomplete="off" type="text" required="" class='form-control rounded border ' id="search" name="query" placeholder="Search" aria-label="search"  style="min-width: 125px;">
+        </form>
+    </div> {% endcomment %}
+        <!-- row -->
+        <div class="row tm-content-row">
+          
+         
+
+          <div class="col-sm-12">
+            <h4 class="text-center alert alert-info">CART-ITEMS of {{cart.user}}</h4>
+            <table class="table table-hover">
+        <thead>
+          <tr>
+          
+            <th scope="col">Product</th>
+            <th scope="col">Size</th>
+            <th scope="col">Color</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total Price</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+        {% for item in cartitems %}
+          <tr>
+           
+            <td>{{item.product.name}}</td>
+            <td>{{item.product_variant.size}}</td>
+            <td>{{item.product_color.color}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.get_subtotal}}</td>
+            
+            
+          </tr>
+        {% endfor %}
+      
+            </table>
+          </div>
+        </div>
+        </div>
+      </div>
+     
+{% endblock content %}
+  

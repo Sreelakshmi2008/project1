@@ -1,0 +1,59 @@
+{% extends 'store_templates\homepage.html' %}
+{% load static %}
+
+
+{% block content %}
+      
+     
+        <!-- row -->
+        <div class="row tm-content-row mb-5">
+        {{orders}}
+
+          <div class="col-12">
+            <h4 class="text-center mt-5 pt-3" style="background-color: #252525;color: white; height: 50px;">Your Orders</h4>
+            <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Product size</th>
+            <th scope="col">Product color</th>
+            <th scope="col">Price</th>
+            <th scope="col">quantity</th>
+           
+          
+          </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+        
+          <tr>
+            
+            <td>
+              <span>
+              <img src="{{MEDIA_URL}}{{order.product_color.color_image.url}}" alt="not working"style="height:60px">
+              </span>
+              {{order.product.name}}
+            </td>
+            <td>{{order.product_variant.size}}</td>
+            <td>{{order.product_color.color}}</td>
+            <td>{{order.product_variant.price}}</td>
+            <td>{{order.quantity}}</td>
+         
+           
+          
+            </td>
+
+            
+            
+          </tr>
+        {% endfor %}
+      
+            </table>
+            <a href="{% url 'myorders' %}" class="btn btn-dark ml-5">Back to Orders</a>
+          </div>
+        </div>
+        </div>
+      </div>
+     
+{% endblock content %}
+  

@@ -21,7 +21,7 @@
                       <div class="col-lg-4 col-sm-4">
                          <div class="box_main">
                             <h4 class="shirt_text">{{product.name}}</h4>
-                            <h4 class="shirt_text">{{product.description}}</h4>
+                            {% comment %} <h4 class="shirt_text">{{product.description}}</h4> {% endcomment %}
                             <p class="price_text"><span style="color: #262626;">₹{{product.productvariant.first.price}}</span></p>
                             <div class="tshirt_img"><img src="{{ MEDIA_URL }}{{ product.productcolor.first.color_image.url }}" alt="not working"></div>
                             <div class="btn_main">

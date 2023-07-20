@@ -10,3 +10,4 @@ admin.site.register(Size)
 admin.site.register(ProductColor)
 admin.site.register(Color)
 admin.site.register(ProductVariant)
+

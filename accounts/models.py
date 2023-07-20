@@ -2,7 +2,8 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.hashers import make_password
-
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -55,20 +56,30 @@ class CustomUser(AbstractUser):
         # Hash and set the password
         self.password = make_password(raw_password)
 
+   
 
+   
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(CustomUser,on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,related_name='addresses')
     address_line_1 = models.CharField(blank=True,max_length=100)
     address_line_2 = models.CharField(blank=True,max_length=100)
     city = models.CharField(max_length=20,blank=True)
     state = models.CharField(max_length=20,blank=True)
     country = models.CharField(max_length=20,blank=True)
     pincode = models.IntegerField(null=True)
+    status = models. BooleanField(default=False)
 
 
     def __str__(self):
-        return f"{self.user.name}"
+        return f"{self.user.name}-{self.address_line_1}"
     
     def full_address(self):
-        return f"{self.address_line_1} {self.address_line_2}"
+        return f"{self.address_line_1} , {self.address_line_2} , {self.city} , {self.state} - {self.pincode} "
+    
+
+
+@receiver(pre_save, sender=UserProfile)
+def restrict_status(sender, instance, **kwargs):
+        if instance.status:
+            UserProfile.objects.exclude(id=instance.id).update(status=False)

@@ -1,0 +1,64 @@
+{% extends 'admin_templates\adminpanel.html' %}
+{% load static %}
+
+
+{% block content %}
+      
+      {% comment %} <div class="col-sm-11 card-body">
+        <form action="{% url 'order_search' %}" class="d-none d-md-flex input-group w-auto my-auto" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-dark btn-outline-success" >
+              <i class="fa fa-search " aria-hidden="true"  style="color:#FFFFFF;"></i>
+            </button>
+            <input autocomplete="off" type="text" required="" class='form-control rounded border ' id="search" name="query" placeholder="Search" aria-label="search"  style="min-width: 125px;">
+        </form>
+    </div> {% endcomment %}
+        <!-- row -->
+        <div class="row tm-content-row">
+          
+          
+          <div class="col-12">
+            <h4 class="text-center alert alert-info">Orders of {{order.user}} -- {{order.order_number}}</h4>
+            <table class="table caption-top">
+              <!-- <caption>List of categories</caption> -->
+              <thead>
+                <tr>
+
+                  
+                  <th scope="col">Product</th>
+                  <th scope="col">Size</th>
+                  <th scope="col">Color</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Price</th>
+                  
+          
+                </tr>
+              </thead>
+              <tbody>
+                  {% for order in user_orders %}
+                  
+                <tr>
+                  
+                  <td>{{ order.product }}</td>
+                  <td>{{ order.product_variant.size }}</td>
+                  <td>{{ order.product_color.color }}</td>
+                  <td>{{ order.quantity }}</td>
+                  <td>{{ order.product_variant.price }}</td>
+                  <td style="color: {% if order.status == 'New' %}blue{% elif order.status == 'Pending' %}orange{% elif order.status == 'Shipped' %}brown{% elif order.status == 'Delivered' %}green{% elif order.status == 'Cancelled' %}red{% endif %}">
+                
+
+       
+                </tr>
+                
+                  
+                  {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </div>
+      </div>
+     
+{% endblock content %}
+  

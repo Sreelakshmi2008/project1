@@ -1,0 +1,75 @@
+{% extends 'admin_templates\adminpanel.html' %}
+{% load static %}
+
+
+{% block content %}
+      
+     
+        <!-- row -->
+        <div class="row tm-content-row mt-5 mb-5">
+          
+          
+          <div class="col-12">
+            
+            <div class="card m-auto" style="width: 25rem;background-color: #d1ecf1;">
+              <div class="card-body">
+                <h5 class="card-title">Payment Details</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{user_payment_details.user.name}}  ----order no : {{order.order_number}} </h6>
+                <p class="card-text">
+                  <ul class="list-group" style="background-color: #d1ecf1;list-style: none;">
+                    <li>User : <span class="pl-5">{{user_payment_details.user}}</span></li>
+                    <li>Method : <span class="pl-5">{{user_payment_details.payment_method}}</span></li>
+                    <li>Amount : <span class="pl-5">{{user_payment_details.amount_paid}}</span></li>
+                    <li>Status :<span class="pl-5"> 
+                      {% if user_payment_details.status %}
+                      Paid
+                      {% else %}
+                      Not Paid
+                      {% endif %}
+                    </span>
+
+                    </li>
+
+                  </ul>
+                </p>
+                
+              </div>
+            </div>
+            <!-- <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>&nbsp;</th>
+            <th scope="col">User</th>
+            <th scope="col">Payment Method</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Status</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+        
+          <tr>
+            <td>&nbsp;</td>
+            <td>{{user_payment_details.user}}</td>
+            <td>{{user_payment_details.payment_method}}</td>
+            <td>{{user_payment_details.amount_paid}}</td>
+            <td>
+              {% if user_payment_details.status %}
+              <h3>Paid</h3>
+              {% else %}
+              <h3>Not Paid</h3>
+              {% endif %}
+            </td>
+            
+            
+          </tr>
+       
+      
+            </table> -->
+          </div>
+        </div>
+        </div>
+      </div>
+     
+{% endblock content %}
+  

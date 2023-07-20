@@ -279,8 +279,8 @@ thead {
   padding-right: 15px;
 }
 .form-control {
-  background-color: #54657d;
-  color: #fff;
+  background-color: white;
+  color: black;
   border: 0;
 }
 .form-control:focus {

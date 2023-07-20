@@ -33,7 +33,7 @@ class ColorForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['category','subcategory','name','description','stock']
+        fields = ['category','subcategory','name','description']
 
 
 
@@ -41,7 +41,7 @@ class ProductForm(forms.ModelForm):
 class ProductVariantForm(forms.ModelForm):
     class Meta:
         model = ProductVariant
-        fields = ['product','size','price']
+        fields = ['product','size','price','pdt_stock']
 
 
 # product color variant form
@@ -49,3 +49,4 @@ class ProductColorForm(forms.ModelForm):
     class Meta:
         model = ProductColor
         fields = ['product','color', 'color_image']
+        

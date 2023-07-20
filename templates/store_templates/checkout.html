@@ -6,49 +6,96 @@
 {% block content %}
    
  
+        
 
-       
+            
         <section class="sign-in">
-           <div class="container d-flex">
-            {% if address_added %}
-            <div class="card mt-5 mb-5" style="width: 18rem;height: 25rem; border: none;">
-                    <div class="card-body mb-0">
-                    <h1 class="card-title">Your Address</h1>
-                    <h5 class="card-subtitle mb-2 ">Name : {{user_profile.user.name}}</h5>
-                    <h5 class="card-subtitle ml-0">Phone.No : {{user_profile.user.phone_number}}</h5>
-                    <h5 class="card-subtitle ml-0">{{user_profile.address_line_1}}</h5>
-                    <h5 class="card-subtitle ml-0">{{user_profile.address_line_2}}</h5>
-                    <h5 class="card-subtitle ml-0">{{user_profile.city}}</h5>
-                    <h5 class="card-subtitle ml-0">{{user_profile.state}}</h5>
-                    <h5 class="card-subtitle ml-0">{{user_profile.country}}</h5>
-                    <h5 class="card-subtitle ml-0">{{user_profile.pincode}}</h5>
-                    </div>
-                   
-                    <div class="mb-5">
-                        <a class="btn" style="border-color: black;font-size: 13px;" href="{% url 'edit_address' %}">Edit Shipping Address</a>
-                    </div>
-                 
-            </div>
-            <div class="card-body mt-5">
-                <h1 class="card-title">Choose Payment Method</h1>
-                    <h5 class="card-subtitle ml-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-                      </svg>
-                      <a class="myLink" href="">Cash On delivery</a>
-                    </h5>
-                    <h5 class="card-subtitle ml-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-                        </svg>
-                      <a href="" class="myLink">Credit Card Payment</a>
-                    </h5>
-                   
-                    <a style="display: none;" href="{% url 'order_summary'  %}" class="myButton btn btn-dark ml-5">Proceed to pay</a>
+           
+            <div class="container d-flex mb-5 mt-5" style="gap:80px;float: right;">
+             {% if address_added %} 
+                <div class="card mt-5 mb-5 border-none shadow">
+                        <div class="card-body ">
+                        <h1 class="card-title">Your Default Address</h1>
+                        <address><h5>Name : {{default_address.user.name}}</h5>
+                            <h5>Phone.No : {{default_address.user.phone_number}}</h5>
+                            <p class="ml-0">{{default_address.address_line_1}} , 
+                            {{default_address.address_line_2}} , 
+                            {{default_address.city}}, 
+                            {{default_address.state}} ,                  
+                            {{default_address.country}} ,
+                            {{default_address.pincode}} 
+                            {{default_address.status}} 
+                            </p></address>
+                        </div>
+                        
+                        <div class="card-footer">
+                           <a href="{% url 'userprofile' %}">
+                            Change Default Address
+                           </a>                          
+                            {% if default_address.status %}
+                            <i class="fa fa-check-circle text-success"></i>
+                            {% endif %}
+                        </div>
+                </div>     
+               
+               
 
-                </div>
-           </div>
+                <div class="card mt-5 mb-5 border-none shadow" style="width:18rem">
+                    <div class="card-body text-center">
+                      <h1 class="card-title text-center">Order</h1>
+                      <h6 class="card-subtitle mb-2 text-muted">Total Items :
+                        <span class='pl-4'>{{total_quantity}} items</span>
+                      </h6>
+                    
+                      <h6 class="card-subtitle mb-2 text-muted">Sub Total :
+                        <span class='pl-4'> ₹  {{total_price}}</span>
+                      </h6>
 
+                         <!-- Dropdown menu -->
+                          <select id="myDropdown" class="mt-5">
+                            <option value="">Payment Method</option>
+                            <option value="option1">Cash On Delivery 1</option>
+                            <option value="option2">Razorpay</option>
+                          </select>
+
+                          <!-- Proceed button -->
+                          
+<!--                           
+                           <button name="cod_button"  class="cod_button btn-dark">COD</button>
+                           <button name="razorpay_button"  class=" btn-dark">Razorpay</button> -->
+
+                          <button   class="proceed_button btn-dark">Proceed</button>
+
+                         
+                          {% if flag == 1 %}
+                          <button   class="wallet_pay btn-dark mt-4 pl-3 pr-3">Pay using Wallet</button>
+                          {% endif %}
+
+
+                          <!-- Pop-up overlay -->
+                          <div id="overlay" class="overlay"></div>
+
+                          <!-- Pop-up content -->
+                        <div id="popup" class="popup" style="background-color: #4BB543;">
+                           <div class="row m-auto">
+                            <div class="col-sm-10 offset-sm-1 text-center">
+                              <p class="icon-addcart"><span><i class="icon-check"></i></span></p> 
+                              <h2 class="mb-4">Thank you for purchasing</h2>
+                                <i class="fa fa-check-circle fa-4x text-success"></i>
+                              
+                              <h5>your order id :<span id="cod_order_id">0</span></h5>
+                              <h5>Cash On Delivery</h5> 
+                              <h5>Amount to be Paid: <span id="cod_amount_to_be_paid">0</span></h5> 
+                            <button ><a href="{% url 'homepage' %}">Close</a></button>
+                            </div>
+                           </div>
+                        </div>
+                        
+                
+                         
+                                            
+                    </div>
+                  </div>
             {% else %}
 
             <div class="card mt-5 mb-5" style="width: 18rem;height: 18rem;">
@@ -58,8 +105,9 @@
             </div>
             {% endif %}
             
-
-            
+            <h4 class="mb-5"><a href="{% url 'cart' %}">Back to Cart</a></h2>
+            </div>
+         
              
         </section>
 
@@ -75,4 +123,41 @@
         });
     });
 </script>
+
+<script>
+function showRazorpay() {
+  console.log("r")
+  var razorpayApiKey = 'rzp_test_dFh4aC1ZdKsGUq';
+    var orderID = document.getElementById("order-id").value;
+    var amount = document.getElementById("amount").value;
+  
+
+  // Create an options object with payment details
+  var options = {
+    key: razorpayApiKey,
+    amount: parseInt(amount)*100, // Replace with the actual amount
+    currency: 'INR',
+    name: 'Ecomerce',
+    description: 'Payment for your purchase',
+    order_id:orderID,
+    handler: function(response) {
+      // Handle the response after payment completion
+      console.log(response);
+      console.log("handler")
+
+    
+      // Add your own logic here
+           
+        }
+        
+  };
+
+  // Initialize Razorpay checkout
+  var rzp = new Razorpay(options);
+  rzp.open();
+}
+</script>
+
+
+
  {% endblock content %}

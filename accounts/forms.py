@@ -1,21 +1,22 @@
 from django import forms
 from .models import CustomUser,UserProfile
+from django.contrib.auth.forms import UserCreationForm
 # from phonenumber_field.formfields import PhoneNumberField
 
 
 
-# class Aforms(forms.ModelForm):
-#     class Meta:
-#         model = CustomUser
-#         fields = ['email','name','phone_number', 'password']
-#         widgets = {
+class Aforms(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['email','name','phone_number']
+        widgets = {
             
-#             'email': forms.EmailInput(attrs={'class': "form-control"}),
-#             'name': forms.TextInput(attrs={'class':"form-control"}),
-#             'phone_number': forms.TextInput(attrs={'class':"form-control"}),
-#             'password': forms.PasswordInput(render_value=True, attrs={'class': "form-control"}),
+            'email': forms.EmailInput(attrs={'class': "form-control"}),
+            'name': forms.TextInput(attrs={'class':"form-control"}),
+            'phone_number': forms.TextInput(attrs={'class':"form-control"}),
+           
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-#         }
+        }
 
 
 # phone number input form for user to send otp
@@ -42,7 +43,7 @@ class UserProfileForm(forms.ModelForm):
             'state': forms.TextInput(attrs={'class': "form-control"}),
             'country': forms.TextInput(attrs={'class':"form-control"}),
             'pincode': forms.TextInput(attrs={'class':"form-control"}),
-
-
+            
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
         }
+    

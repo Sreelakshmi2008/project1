@@ -5,7 +5,9 @@ from adminapp.models import Product,Category,Size,Subcategory,ProductVariant,Col
 import json
 from django.http import JsonResponse
 from django.db.models import Q
-
+from payment.models import *
+from django.contrib import messages
+from payment.views import *
 # Create your views here.
 
 
@@ -19,11 +21,12 @@ def add_to_cart(request):
         price = request.GET['selectedprice']
         size =request.GET['selectedsize']
         color = request.GET['selectedcolor']
-        quantity =request.GET['selectedquantity']
+        
         print(price)
         print(size)
         print(color)
-        print(quantity)
+        
+       
         color_id = Color.objects.filter(name=color).values_list('pk', flat=True).first()
         print(color_id)
         product_color = ProductColor.objects.get(product_id=id,color_id=color_id)
@@ -32,18 +35,23 @@ def add_to_cart(request):
         print(size_id)
         product_variant = ProductVariant.objects.get(product_id=id,size_id=size_id)
         print(product_variant)
-        product_color = ProductColor.objects.get(product_id=id,color_id=color_id)
-        print(product_color)
+       
         if product_variant and product_color:
-            # cart_item,item_created = CartItem.objects.get_or_create(user=user,cart=cart,product=product)
-            # if cart_item:
-            #     print("there is an item")
-            #     cart_item.quantity = cart_item.quantity + int(quantity)
-            #     cart_item.save()
-            # else:
-            #     print("new item created")
-            CartItem.objects.create(user=user,cart=cart,product=product,product_variant=product_variant,product_color=product_color,quantity=quantity)
-    
+            try:
+               if CartItem.objects.get(user=user,cart=cart,product=product,product_variant=product_variant,product_color=product_color):
+                    cart_item = CartItem.objects.get(user=user,cart=cart,product=product,product_variant=product_variant,product_color=product_color)
+                    print("there is an item")
+                    cart_item.quantity = cart_item.quantity + 1
+                    
+                    cart_item.save()
+               else:
+                   raise Exception("no same item in cart")
+            except Exception as e:
+                error_message = f"Error occurred: {str(e)}"
+                print(error_message)
+                CartItem.objects.create(user=user,cart=cart,product=product,product_variant=product_variant,product_color=product_color,quantity=1)
+                
+                
         return JsonResponse({'status':400,"message":"added"})
 
 
@@ -52,7 +60,14 @@ def add_to_cart(request):
 # delete item form cart
 def delete_cart_item(request,id):
     cart_item = get_object_or_404(CartItem, pk=id)
+    
     cart_item.delete()
+    c = cart_item.cart
+    print(c.coupon,"before")
+    c.coupon = None
+    print(c.coupon)
+    c.save()
+    
     return redirect('cart')
 
 
@@ -61,6 +76,7 @@ def delete_cart_item(request,id):
 # cart display to user
 def cart(request):
     user = request.user if request.user.is_authenticated else None
+    
     try:
         if user:
             
@@ -68,15 +84,26 @@ def cart(request):
             print(cart)
             cart_items = CartItem.objects.filter(user=user)
             if cart_items:
-                sum = cart.get_total_price()
-                total = cart.get_total_products()
-                context = {
-                    'cart_items': cart_items,
-                    'cart': cart,
-                    'sum':sum,
-                    'total':total
-                }
-                return render(request, 'store_templates\cart.html', context)
+                    if cart.coupon:
+                        print("there is coupon----",cart.coupon)
+                    
+                        sum = cart.coupon_total
+                       
+                    else:
+                       sum = cart.get_total_price()
+                       cart.cart_total = sum
+                       cart.save()
+                    total = cart.get_total_products()
+                    print(total,sum)
+                    context = {
+                        'cart_items': cart_items,
+                        'cart': cart,
+                        'sum':sum,
+                        'total':total,
+                        'coupons':Coupon.objects.all()
+                        
+                    }
+                    return render(request, 'store_templates\cart.html', context)
             else:
                 message = "Your Cart is Empty"
                 return render(request, 'store_templates\cart.html', {'message': message})
@@ -88,9 +115,38 @@ def cart(request):
         error_message = f"Error occurred: {str(e)}"
         print(error_message)
         return redirect('homepage')
-    return render(request, 'store_templates\cart.html')
+    # return render(request, 'store_templates\cart.html')
 
 
+
+
+
+# update item quantity in cart function using ajax
+def update_cart_item_quantity(request):
+        print('entered')
+        cart = Cart.objects.get(user=request.user)
+        cart_item_id = request.GET.get('cart_item_id')
+        action = request.GET.get('action')
+        
+        # cart_item = Cartitem.objects.get(id=cart_item_id)
+        try:
+           print('try')
+           cart_item = CartItem.objects.get(id=cart_item_id) 
+        except cart_item.DoesNotExist:
+            return JsonResponse({'status': 404, 'error': 'Cart item not found'})
+
+        if action == 'increase':
+            print("increases")
+            
+            if cart_item.product_variant.pdt_stock > cart_item.quantity:
+                cart_item.quantity += 1
+               
+                print(cart_item.quantity)
+        elif action == 'decrease':
+            cart_item.quantity -= 1 if cart_item.quantity > 1 else 0
+        cart_item.save()
+        total_items = cart.get_total_products()
+        return JsonResponse({'status': 200, 'quantity': cart_item.quantity,'total':cart.get_total_price(),'total_items':total_items})
 
 # def cart_item_search(request):
 #     if request.method == 'POST':
@@ -106,28 +162,5 @@ def cart(request):
 
 
 
-# def update_cart_item(request, id):
-#    cart_item = get_object_or_404(CartItem, id=id)
-#    if request.method == 'POST':
-#         new_quantity = int(request.POST.get('quantity', 0))
-#         if new_quantity >= 0:
-#             cart_item.quantity = new_quantity
-#             cart_item.save()
-#    return redirect('cart:carts')
+        
 
-
-# def update_cart_item(request, id):
-#     cart_item = get_object_or_404(CartItem, id=id)
-#     if request.method == 'POST':
-#         new_quantity = int(request.POST.get('quantity', 0))
-#         if new_quantity >= 0:
-#             cart_item.quantity = new_quantity
-#             cart_item.save()
-
-#     # Prepare the data to be sent back in the AJAX response
-#     data = {
-#         'subtotal': cart_item.get_subtotal(),
-#     }
-
-#     # Return the updated data as a JSON response
-#     return JsonResponse(data)

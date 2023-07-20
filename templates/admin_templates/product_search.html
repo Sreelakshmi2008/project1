@@ -1,0 +1,79 @@
+{% extends 'admin_templates\admin_accounts.html' %}
+
+
+{% block content %}
+
+<div class="col-sm-12">
+    
+    <h4 class="text-center alert alert-info"> PRODUCT INFORMATION </h4>
+   
+    <table class="table table-hover tm-table-small tm-product-table">
+        <thead>
+          <tr>
+
+            <th scope="col">&nbsp;</th>
+            <th scope="col">PRODUCT IMAGE</th>
+            <th scope="col">PRODUCT NAME</th>
+            <th scope="col">PRODUCT CATEGORY</th>
+            <th scope="col">PRODUCT SUBCATEGORY</th>
+             
+            <th scope="col">COLOR</th>
+            <th scope="col">SIZE</th>
+            <th scope="col">PRICE</th>
+            <th scope="col">IN STOCK</th> 
+            <th scope="col">Extras</th> 
+            
+          </tr>
+        </thead>
+        {% for product in product %}
+        <tbody>
+
+          <tr>
+            
+            <th scope="col">&nbsp;</th>
+            <td class="tm-product-name"><img src="{{product.productcolor.first.color_image.url}}" style="height:60px"></td>
+            <td class="tm-product-name">{{product.name}}</td>
+            <td>{{product.category}}</td>
+            <td>{{product.subcategory}}</td>
+            <td>
+              {% for color in product.productcolor.all %}
+              {{ color.color }}<br>
+              {% endfor %}
+            </td>
+            <td>
+              {% for size in product.productvariant.all %}
+              {{size.size}}<br>
+              {% endfor %}
+            </td>
+
+            <td>
+              {% for size in product.productvariant.all %}
+              ₹{{size.price}}<br>
+              {% endfor %}
+            </td>
+
+            <td  class="tm-product-name">{{product.stock}}</td>
+              <td>
+                <a href="{% url 'add_product_variant' product.id %}" style="color: white;">Add product variant</a><br>
+                <a href="{% url 'add_product_color' product.id %}" style="color: white;">Add product Color</a><br>
+                <a href="{% url 'edit_product' product.id %}" style="color: white;">Edit product</a><br>
+
+              </td>
+            
+            <td>
+              <a href="{% url 'delete_product' product.id %}" class="tm-product-delete-link">
+                <i class="far fa-trash-alt tm-product-delete-icon"></i>
+              </a>
+            </td>
+            
+            
+          </tr>
+        </tbody>
+        {% endfor %}
+              
+      </table>
+      <div class="d-flex justify-content-center">
+        <a href="{% url 'products' %}" class="btn btn-info" >Back to Products</a>
+      </div>
+  </div>
+{% endblock content %}

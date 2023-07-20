@@ -1,0 +1,74 @@
+
+{% extends 'store_templates\homepage.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="fashion_section">
+    <h2 class="fashion_taital pt-5">Products</h2>
+    <div id="main_slider" class="carousel slide" data-ride="carousel">
+       <div class="carousel-inner">
+          
+          
+          <div class="carousel-item active">
+             
+             <div class="container">
+                
+                <div class="fashion_section_2">
+                   <div class="row">
+                    {% if flag is False %}
+                    <div class="box_main">
+                        <h4 class="shirt_text">Your Wish List Is Empty</h4>
+                       
+                    {% else %}
+                      {% for wishlist in user_wishlist %}
+                      
+                      <div class="col-lg-4 col-sm-4">
+                         <div class="box_main">
+                            <h4 class="shirt_text">{{wishlist.product.name}}</h4>
+                            {% comment %} <h4 class="shirt_text">{{wishlist.product.description}}</h4> {% endcomment %}
+                            <p class="price_text"><span style="color: #262626;">₹{{wishlist.product.productvariant.first.price}}</span></p>
+                            <div class="tshirt_img">
+                              <a href="{% url 'product_details' wishlist.product.id %}">
+                                 <img src="{{ MEDIA_URL }}{{ wishlist.product.productcolor.first.color_image.url }}" alt="not working">
+                              </a>
+                           </div>
+                            <div class="btn_main">
+                               <div class="buy_bt"><a href="{% url 'remove_from_wishlist'  wishlist.product.id %}">Remove From Wishlist</a></div> 
+                               <div class="seemore_bt"><a href="{% url 'product_details' wishlist.product.id %}">See More</a></div>
+                            </div>
+                         </div>
+                      </div>
+                      {% endfor %}
+                      {% endif %}
+
+                      <div class="row">
+                        <div class="col-lg-9"></div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <div class="cart__btn">
+                                <a href="{% url 'homepage' %}">Continue Shopping</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            
+                        </div>
+                    </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+         
+          
+       </div>
+       {% comment %} <a class="carousel-control-prev" href="#main_slider" role="button" data-slide="prev">
+       <i class="fa fa-angle-left"></i>
+       </a>
+       <a class="carousel-control-next" href="#main_slider" role="button" data-slide="next">
+       <i class="fa fa-angle-right"></i>
+       </a> {% endcomment %}
+    </div>
+ </div>
+ <!-- fashion section end -->
+
+{% endblock content %}

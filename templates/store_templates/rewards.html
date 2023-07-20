@@ -1,0 +1,39 @@
+
+{% extends 'store_templates\homepage.html' %}
+{% load static %}
+
+    
+{% block content %}
+   
+ 
+        
+
+            
+        <section class="sign-in pt-5 mt-5">
+           
+        <div class="container d-flex m-auto mb-5">
+            <div class="row ml-5 col-lg-6 mb-5">
+              <div class="col-lg-6 text-center pt-5 pb-5" style="background-color: #555;">
+                
+                <h2 class="mb-4 ml-0"  style="color: white;">Rewards</h2>
+                
+                <h5 style="color: white;">Cashback :  ₹ {{rewards.cashback_amount}}</h5> 
+              </div>
+                
+              </div>
+              <p class="m-auto">
+                <!-- <a href="index.html"class="btn btn-primary btn-outline-primary">Home</a> -->
+                <a href="{% url 'homepage' %}"class="btn btn-primary btn-outline-primary float-right"><i class="icon-shopping-cart"></i> Continue Shopping</a>
+              </p>
+            </div>
+          
+        </div>
+            
+                  
+            
+             
+        </section>
+
+
+
+ {% endblock content %}

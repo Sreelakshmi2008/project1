@@ -15,9 +15,13 @@
                         <form method="POST" class="register-form" id="login-form">
                         {% csrf_token %}  
                         {{form.as_p}}
-                            <div class="form-group form-button">
-                                <input type="submit" name="signin" id="signin" class="form-submit ml-4" value="Save"/>
+                        <div class="d-flex">
+                            <input type="checkbox" name="my_checkbox" class="ml-4 my_checkbox" id="my_checkbox" value="False" style="display: block;">
+                            <label for="my_checkbox" class="ml-3">Default Address</label>
                             </div>
+                                <div class="form-group form-button">
+                                    <input type="submit" onclick="submitForm()" name="signin" id="signin" class="form-submit ml-4" value="Save"/>
+                                </div>
                         </form>
             </div>
            
