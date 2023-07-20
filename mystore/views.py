@@ -99,7 +99,7 @@ def checkout_page(request):
         address_added = False
    
    # check if wallet payment avilable or not
-    wallet = Wallet.objects.filter(user=request.user)
+    wallet = Wallet.objects.get(user=request.user)
     print(wallet)
     if wallet.wallet_amount >= total_price:
        flag = 1
