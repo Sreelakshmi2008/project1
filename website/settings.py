@@ -87,8 +87,8 @@ DATABASES = {
         'NAME': 'chictux_final',
         'USER': 'root',
         'PASSWORD':'1234',
-        'HOST':'%',
-        'PORT':'3306',
+        'HOST':'localhost',
+        'PORT':'',
         'OPTIONS': {  
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
         }  
