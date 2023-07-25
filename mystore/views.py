@@ -15,7 +15,7 @@ from .forms import *
 def homepage(request):
    product = Product.objects.all()
    sub = Subcategory.objects.all()
-   return render(request,'store_templates\homepage.html',{'product':product,'sub':sub})
+   return render(request,'store_templates/homepage.html',{'product':product,'sub':sub})
 
 
 
