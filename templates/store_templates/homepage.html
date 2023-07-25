@@ -225,7 +225,7 @@
                                  <p class="price_text"><span style="color: #262626;">₹{{product.productvariant.first.price}}</span></p>
                                  <div class="tshirt_img">
                                     <a href="{% url 'product_details'  product.id %}">
-                                    <img src="{{ MEDIA_URL }}{{ product.productcolor.first.color_image.url }}" alt="not working" >
+                                    <img src="{{ product.productcolor.first.color_image.url }}" alt="not working" >
                                     </a>
                                  </div>
                                  <div class="btn_main">
