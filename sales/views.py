@@ -26,7 +26,7 @@ def sales_report(request):
     context = {
          'products': products,
     }
-    return render(request, 'admin_templates\sales_report.html', context)
+    return render(request, 'admin_templates/sales_report.html', context)
 
 
 
@@ -58,7 +58,7 @@ def sales_report_by_product(request,id):
     }
     
 
-    return render(request, 'admin_templates\sales_report_by_product.html',context)
+    return render(request, 'admin_templates/sales_report_by_product.html',context)
 
 
 

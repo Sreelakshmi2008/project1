@@ -50,7 +50,7 @@ def signup(request):
             messages.info(request,'Passwords do not match')
             return redirect('signup')
         
-    return render(request,'store_templates\signup.html',{'sub': Subcategory.objects.all()})
+    return render(request,'store_templates/signup.html',{'sub': Subcategory.objects.all()})
 
 
 
@@ -87,13 +87,13 @@ def signin(request):
             print(w)
             messages.info(request,'Logged in succesfully')
             
-            return render(request,'store_templates\homepage.html',{'user':user})
+            return render(request,'store_templates/homepage.html',{'user':user})
         else:
             print("else")
             messages.error(request,'Invalid credentials')
             return redirect('signin')
         
-    return render(request,'store_templates\signin.html',{'sub': Subcategory.objects.all()})
+    return render(request,'store_templates/signin.html',{'sub': Subcategory.objects.all()})
 
 
 # signout from account of user
@@ -122,8 +122,8 @@ def otp_login(request):
                 return redirect('verifyotp')
             else:
                 message = "Please register first"
-                return render(request, 'store_templates\sendotp.html',{'message':message})
-    return render(request, 'store_templates\sendotp.html',{'form':form,'sub': Subcategory.objects.all()})
+                return render(request, 'store_templates/sendotp.html',{'message':message})
+    return render(request, 'store_templates/sendotp.html',{'form':form,'sub': Subcategory.objects.all()})
 
 
 
@@ -143,7 +143,7 @@ def verify_otp(request):
                 if userobj is not None and user.is_active and user.is_superuser == False:
                     login(request, user)
                     name=user.name
-                    return render(request,'store_templates\homepage.html',{'name':name})
+                    return render(request,'store_templates/homepage.html',{'name':name})
                 return redirect('homepage')
             else:
                 print("error")
@@ -350,4 +350,4 @@ def edit_user_details(request):
         'form': form,
         'sub': Subcategory.objects.all()
     }
-    return render(request, 'store_templates\edit_user_detials.html', context)
+    return render(request, 'store_templates/edit_user_detials.html', context)

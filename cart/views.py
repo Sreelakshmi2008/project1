@@ -103,10 +103,10 @@ def cart(request):
                         'coupons':Coupon.objects.all()
                         
                     }
-                    return render(request, 'store_templates\cart.html', context)
+                    return render(request, 'store_templates/cart.html', context)
             else:
                 message = "Your Cart is Empty"
-                return render(request, 'store_templates\cart.html', {'message': message})
+                return render(request, 'store_templates/cart.html', {'message': message})
         else:
             raise Exception("User not authenticated")  # Raise an exception if the user is not authenticated
     except Exception as e:

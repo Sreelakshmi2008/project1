@@ -27,7 +27,7 @@ def search_product(request):
         print("search products")
         query = request.POST['query']
         product = Product.objects.filter(Q(name__icontains=query))
-    return render(request, "store_templates\product_search.html", {'product':product})
+    return render(request, "store_templates/product_search.html", {'product':product})
 
 
 
@@ -44,14 +44,14 @@ def menscollection(request):
 
        
 
-   return render(request,'store_templates\menscollection.html',{'product':product,'sub':sub,'price_filter_form':price_filter_form})
+   return render(request,'store_templates/menscollection.html',{'product':product,'sub':sub,'price_filter_form':price_filter_form})
 
 
 # womencollection html rendering
 def womencollection(request):
    product = Product.objects.filter(category_id=2)
    sub = Subcategory.objects.all()
-   return render(request,'store_templates\womencollection.html',{'product':product,'sub':sub})
+   return render(request,'store_templates/womencollection.html',{'product':product,'sub':sub})
 
 
 # product individual page 
@@ -62,7 +62,7 @@ def product_details(request,id):
   v = product.productvariant.all()
   
  
-  return render(request,'store_templates\product_details.html',{'product':product,'sub':sub})
+  return render(request,'store_templates/product_details.html',{'product':product,'sub':sub})
 
 
 # by sub category showing producst for user
@@ -71,7 +71,7 @@ def subcategory_filtering(request,id):
    sub_name = Subcategory.objects.get(pk=id).name
    product = Product.objects.filter(subcategory_id=id)
 
-   return render(request,'store_templates\subcategory_filtering.html',{'product':product,'sub_name':sub_name,'sub':sub})
+   return render(request,'store_templates/subcategory_filtering.html',{'product':product,'sub_name':sub_name,'sub':sub})
 
 
 
@@ -116,7 +116,7 @@ def checkout_page(request):
     }
 
    
-    return render(request,'store_templates\checkout.html',context)
+    return render(request,'store_templates/checkout.html',context)
 
 
 
@@ -130,7 +130,7 @@ def myorders(request):
       'reason_form':reason_form
    }
    
-   return render(request,'store_templates\myorders.html',context)
+   return render(request,'store_templates/myorders.html',context)
 
 
 # myorders  products template
@@ -143,7 +143,7 @@ def myorders_products(request,id):
       
    }
    
-   return render(request,'store_templates\myorders_products.html',context)
+   return render(request,'store_templates/myorders_products.html',context)
 
 
 
@@ -178,7 +178,7 @@ def user_wishlist(request):
          'user_wishlist':user_wishlist,
          'flag':flag,
       }
-      return render(request,'store_templates\wishlist.html',context)
+      return render(request,'store_templates/wishlist.html',context)
    
    return redirect('signin')
 
