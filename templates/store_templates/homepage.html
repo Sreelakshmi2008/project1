@@ -388,36 +388,8 @@
                }
          }
 
-
-         // Function to increment the quantity
-         function incrementQuantity(max) {
-            var value = parseInt(document.getElementById('quantity').value, 10);
-            value = isNaN(value) ? 0 : value;
-            if( value < max){
-               
-               value++;
-
-            }
-            document.getElementById('quantity').value = value;
-            var selectedquantityInput = document.getElementById("selectedquantity")
-         selectedquantityInput.value = document.getElementById('quantity').value
-         console.log(selectedquantityInput.value)
-       }
-
-       
-       
-         // Function to decrement the quantity
-         function decrementQuantity() {
-            var value = parseInt(document.getElementById('quantity').value, 10);
-            value = isNaN(value) ? 0 : value;
-            if (value > 1){
-               value--;
-            }
-            
-            document.getElementById('quantity').value = value;
-           
-       }
-       
+      </script>
+      <script>
         
       //  add to cart button ajax
        $(".addToCartButton").on('click', function() {
@@ -442,6 +414,7 @@
                url:"{% url 'add_to_cart' %}",
                method:"GET",
                data:data,
+               
 
                success: function(data) {
                   console.log("code run success")
