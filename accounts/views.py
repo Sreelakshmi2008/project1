@@ -33,9 +33,10 @@ def signup(request):
         pass2 = request.POST['pass2']
         print(pass1,pass2)
         if pass1 == pass2:
-            if CustomUser.objects.filter(email=email).exists():
-                messages.info(request,'User already exists')
+            if CustomUser.objects.filter(email=email).exists() or  CustomUser.objects.filter(phone_number=phone_number).exists():
+                messages.error(request,'User already exists')
                 return redirect('signup')
+                
             else:
                 print("else")
                 user = CustomUser.objects.create_user(email=email,name=name,phone_number=phone_number, password=pass1)
