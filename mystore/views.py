@@ -23,11 +23,12 @@ def homepage(request):
 # search products in search bar
 def search_product(request):
     product = None
+    sub = Subcategory.objects.all()
     if request.method == 'POST':
         print("search products")
         query = request.POST['query']
         product = Product.objects.filter(Q(name__icontains=query))
-    return render(request, "store_templates/product_search.html", {'product':product})
+    return render(request, "store_templates/product_search.html", {'product':product,'sub':sub})
 
 
 
@@ -127,7 +128,8 @@ def myorders(request):
    reason_form = CancelOrderForm()
    context ={
       'orders':orders,
-      'reason_form':reason_form
+      'reason_form':reason_form,
+        'sub': Subcategory.objects.all(),
    }
    
    return render(request,'store_templates/myorders.html',context)
@@ -140,6 +142,7 @@ def myorders_products(request,id):
    
    context ={
       'orders':orders,
+        'sub': Subcategory.objects.all(),
       
    }
    
@@ -177,6 +180,7 @@ def user_wishlist(request):
       context = {
          'user_wishlist':user_wishlist,
          'flag':flag,
+           'sub': Subcategory.objects.all(),
       }
       return render(request,'store_templates/wishlist.html',context)
    
@@ -204,7 +208,7 @@ def user_wallet(request):
          print(wallet.wallet_amount)
    except:
        wallet = Wallet.objects.create(user=request.user,wallet_amount=0)
-   return render(request,'store_templates/user_wallet.html',{'wallet':wallet})
+   return render(request,'store_templates/user_wallet.html',{'wallet':wallet,  'sub': Subcategory.objects.all()})
 
 
 
@@ -217,6 +221,7 @@ def rewards(request):
    except:
       rewards = Rewards.objects.create(user=request.user,cashback_amount=0)
    context = {
-              'rewards':rewards
+              'rewards':rewards,
+                'sub': Subcategory.objects.all(),
        }
    return render(request,'store_templates/rewards.html',context)

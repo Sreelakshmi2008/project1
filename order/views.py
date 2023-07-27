@@ -1,3 +1,4 @@
+import decimal
 from typing import Any
 from django.views import View
 from django.shortcuts import render, redirect
@@ -281,3 +282,25 @@ def wallet_pay(request):
                 return JsonResponse({'message': 'Order placed successfully.','id':order_number,'amount':total_price,'redirect':redirect_url})
         
 
+
+
+
+def return_order(request,id):
+    print(id)
+    if request.method=="POST":
+        return_reason=request.POST.get('reason')
+        try:
+            order = get_object_or_404(Order, pk=id, user= request.user)
+            order.status='Returned'
+            order.return_reason = return_reason
+            order.save()
+            if order.payment.payment_method == 'Razorpay' or 'COD' or 'Wallet':
+                wallet= Wallet.objects.get(user=request.user)
+                refund_amount = decimal.Decimal(order.order_total)
+                print(refund_amount)
+                wallet.wallet_amount += refund_amount
+                wallet.save()
+
+        except Order.DoesNotExist:
+            pass
+    return redirect('myorders')

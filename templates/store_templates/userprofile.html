@@ -29,6 +29,7 @@
                 MY Rewards
             </a>
            </h3>
+           {% block profile %}
            <div class="row">
             {% if address_added %}
             {% for address in address %}
@@ -74,7 +75,7 @@
             <a class="btn ml-5 mr-5" style="border-color: black;" href="{% url 'add_address' %}">Add Shipping Address</a>
             </div>
             {% endif %}
-            
+            {% endblock profile %}
            </div>
              
     

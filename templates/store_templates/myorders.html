@@ -1,13 +1,18 @@
-{% extends 'store_templates/homepage.html' %}
+
+{% extends 'store_templates/userprofile.html' %}
 {% load static %}
 
+    
 
-{% block content %}
+ 
+        
+{% block profile %}
       
      
         <!-- row -->
         
-        <section class="sign-in pt-3 mt-4 mb-5">
+     
+        <section class="sign-in pt-5 mt-5">
           
           <h4 class="text-center pt-3" style="background-color: #252525;color: white; height: 50px;">Your Orders</h4>
     
@@ -22,7 +27,7 @@
                       <th scope="col">Order No.</th>
                       
                       <th scope="col">Total Price</th>
-                      <th scope="col">Toatl Products</th>
+                   
                     
                       <th scope="col">Payment Status</th>
                       <th scope="col">Order Status</th>
@@ -48,7 +53,14 @@
                             {{order.status}}</td>
                           
                             <td>
-                              {% if order.status == 'Delivered' or order.status == 'Cancelled' %}
+                              {% if order.status == 'Cancelled' or order.status == 'Returned' %}
+                              {% elif order.status == 'Delivered' %}
+                              <form method="post" action="{% url 'return_order' order.id %}">
+                                {% csrf_token %}
+                                <input type="text" name="reason" id="reason" placeholder=" Give Reason For Return " required/>
+                          
+                                <button class="btn btn-danger mt-3" type="submit">Return Order</button>
+                              </form>
                               {% else %}
                               <form method="post" action="{% url 'order_cancel' order.id %}">
                                 {% csrf_token %}
@@ -56,7 +68,8 @@
                           
                                 <button class="btn btn-danger" type="submit">Cancel Order</button>
                               </form>
-
+                              
+                             
                               {% endif %}
                             </td>
                         </tr>
@@ -72,5 +85,6 @@
       </div>
     </section>
      
-{% endblock content %}
+    {% endblock profile %}
+
   

@@ -13,6 +13,10 @@ path('razorpay',views.razorpay.as_view(),name="razorpay"),
 path('order_cancel/<int:id>',views.order_cancel,name="order_cancel"),
 
 
+
+# order return by user
+path('return_order/<int:id>',views.return_order,name="return_order"),
+
 path('wallet_pay',views.wallet_pay,name="wallet_pay"),
 
 ]
