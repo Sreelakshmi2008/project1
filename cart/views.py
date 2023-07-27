@@ -44,13 +44,22 @@ def add_to_cart(request):
                     cart_item.quantity = cart_item.quantity + 1
                     
                     cart_item.save()
+                    c = cart_item.cart
+                    print(c.coupon,"before")
+                    c.coupon = None
+                    print(c.coupon)
+                    c.save()
                else:
                    raise Exception("no same item in cart")
             except Exception as e:
                 error_message = f"Error occurred: {str(e)}"
                 print(error_message)
                 CartItem.objects.create(user=user,cart=cart,product=product,product_variant=product_variant,product_color=product_color,quantity=1)
-                
+                c = cart_item.cart
+                print(c.coupon,"before")
+                c.coupon = None
+                print(c.coupon)
+                c.save()
                 
         return JsonResponse({'status':400,"message":"added"})
 
@@ -140,10 +149,19 @@ def update_cart_item_quantity(request):
             
             if cart_item.product_variant.pdt_stock > cart_item.quantity:
                 cart_item.quantity += 1
-               
+                c = cart_item.cart
+                print(c.coupon,"before")
+                c.coupon = None
+                print(c.coupon)
+                c.save()
                 print(cart_item.quantity)
         elif action == 'decrease':
             cart_item.quantity -= 1 if cart_item.quantity > 1 else 0
+            c = cart_item.cart
+            print(c.coupon,"before")
+            c.coupon = None
+            print(c.coupon)
+            c.save()
         cart_item.save()
         total_items = cart.get_total_products()
         return JsonResponse({'status': 200, 'quantity': cart_item.quantity,'total':cart.get_total_price(),'total_items':total_items})
