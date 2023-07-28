@@ -31,7 +31,7 @@
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 <!-- convert to excel script -->
 <script>
-    function exportTableToExcel(tableID, filename = '') {
+    function exportTableToExcel1(tableID, filename = '') {
         console.log("ok")
     var tableSelect = document.getElementById(tableID);
     var sheet = XLSX.utils.table_to_sheet(tableSelect);
@@ -100,6 +100,46 @@
       doc.save(filename + '.pdf');
     }
     </script>  
+
+
+
+    <script>
+      function exportTableToExcel(tableID, filename = '') {
+          console.log("ok")
+      var tableSelect = document.getElementById(tableID);
+      var sheet = XLSX.utils.table_to_sheet(tableSelect);
+  
+  
+   
+      // Create a new workbook and add the sheet
+      var workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, sheet, 'Sheet1');
+  
+      // Specify the file name
+      filename = filename ? filename + '.xlsx' : 'excel_data.xlsx';
+  
+      // Generate the XLSX file
+      var excelData = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      var blob = new Blob([excelData], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  
+      // Download the blob as a file
+      download(blob, filename);
+      }
+  
+  
+    
+      function download(blob, filename) {
+      var url = window.URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
+      }
+  
+  
+      </script>
+
+
     
 </head>
 
@@ -253,7 +293,7 @@
               
                       <div class="row ml-5">
                           <div class="text-center mt-3 col-6">
-                              <a onclick="exportTableToExcel('order_month_table','order_by_month')" class="btn btn-success">Download Excel</a>
+                              <a onclick="exportTableToExcel1('order_month_table','order_by_month')" class="btn btn-success">Download Excel</a>
                           </div>
                           <div class="text-center mt-3 col-6">
                               <a onclick="exportTableToPDF('order_month_table','order_by_month')" class="btn btn-success">Download Pdf</a>
