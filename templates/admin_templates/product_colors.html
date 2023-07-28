@@ -47,7 +47,7 @@
                    
                     <td>{{variant.color}}</td>
                     <td><img src="{{variant.color_image.url}}" style="height:60px"></td> 
-                    <td><a href="{% url 'delete_pdt_variant' variant.id %}"><i class="fas fa-trash" style="color:cyan"></i></a></td>
+                    <td><a href="{% url 'delete_pdt_color' variant.id %}"><i class="fas fa-trash" style="color:cyan"></i></a></td>
                  
                   </tr>
                   {% endfor %}
