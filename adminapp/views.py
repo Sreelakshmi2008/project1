@@ -4,13 +4,13 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from accounts.models import *
-from django.db.models import Q,Count
+from django.db.models import Q,Count,Value as V,CharField
 from .models import *
 from .forms import *
 from cart.models import *
 from order.models import *
 from payment.forms import *
-from django.db.models.functions import ExtractMonth,ExtractDay
+from django.db.models.functions import ExtractMonth,ExtractDay,Concat
 # Create your views here.
 
 
@@ -54,7 +54,7 @@ def adminpanel(request):
          delivered_orders_number.append(list(d.values())[1])
 
 
-    order_by_day = Order.objects.annotate(month=ExtractMonth('created_at'),day=ExtractDay('created_at')).values('month','day').annotate(count=Count('id')).values('month', 'day', 'count')
+    order_by_day = Order.objects.annotate(month=ExtractMonth('created_at'),day=ExtractDay('created_at')).values('month','day').annotate(count=Count('id')).values('month', 'day', 'count').annotate(date=Concat('month', V('/'), 'day', output_field=CharField()))
     
     monthNumber = []
     totalOrders = []
