@@ -269,7 +269,7 @@ def add_product_color(request,id):
             if fm.is_valid():
                 print("valid")
                 fm.save()  
-                print('success')
+                print('success',ProductColorForm(request.POST,request.FILES))
                 redirect('products')
          else:
              fm=ProductColorForm()

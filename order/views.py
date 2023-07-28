@@ -191,7 +191,7 @@ def order_cancel(request,id):
                         if order_to_cancel.payment.payment_method == 'cod':
                                 order_to_cancel.status = 'Cancelled'
                                 order_to_cancel.save()
-                        elif order_to_cancel.payment.payment_method == 'Razorpay':
+                        elif order_to_cancel.payment.payment_method == 'Razorpay' or order_to_cancel.payment.payment_method == 'Wallet':
                                 order_to_cancel.status = 'Cancelled'
                                 order_to_cancel.save()
                                 w = Wallet.objects.get(user=request.user)
