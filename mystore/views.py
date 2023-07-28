@@ -8,6 +8,7 @@ from order.models import *
 from django.db.models import Q
 from order.forms import *
 from .forms import *
+
 # Create your views here.
 
 
@@ -225,3 +226,8 @@ def rewards(request):
                 'sub': Subcategory.objects.all(),
        }
    return render(request,'store_templates/rewards.html',context)
+
+
+
+def error_404(request,exception):
+   return render(request,'404.html')
