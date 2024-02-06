@@ -176,7 +176,7 @@ def check_phone_number(phone_number):
 # forgot password
 def forgotPassword(request):
     print("entered forgotpassword number")
-    global mobile_number_forgotPassword
+    
     if request.method == 'POST':
         # setting this mobile number as global variable so i can access it in another view (to verify)
         mobile_number_forgotPassword = request.POST.get('phone_number')
@@ -189,6 +189,7 @@ def forgotPassword(request):
         user = CustomUser.objects.filter(phone_number=mobile_number_forgotPassword)
         if user:  #if user exists
             helper.send('+91' + str(mobile_number_forgotPassword))
+            request.session['mobile_number_forgotPassword'] = mobile_number_forgotPassword
             return redirect('forgotPassword_otp')
         else:
             messages.warning(request,'Mobile number doesnt exist')
@@ -199,7 +200,7 @@ def forgotPassword(request):
 
 def forgotPassword_otp(request):
     print("verify forgotpassword otp")
-    mobile_number = mobile_number_forgotPassword
+    mobile_number  = request.session.get('mobile_number_forgotPassword')
     
     if request.method == 'POST':
         form = OTPverificationForm(request.POST)
