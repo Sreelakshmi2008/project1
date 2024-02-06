@@ -7,12 +7,6 @@ For more information on this file, see
 https://docs.djangoproject.com/en/4.2/howto/deployment/wsgi/
 """
 
-try:
-    from reportlab import some_module
-except ImportError as e:
-    print(f"ImportError: {e}")
-    import traceback
-    traceback.print_exc()
 
 
 import os
