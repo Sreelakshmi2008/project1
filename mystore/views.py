@@ -36,7 +36,7 @@ def search_product(request):
 
 # menscollection html rendering
 def menscollection(request):
-   product = Product.objects.filter(category_id=1)
+   product = Product.objects.filter(category_id=4)
    sub = Subcategory.objects.all()
    price_filter_form = PriceFilterForm(request.GET or None)
 
@@ -52,7 +52,7 @@ def menscollection(request):
 
 # womencollection html rendering
 def womencollection(request):
-   product = Product.objects.filter(category_id=2)
+   product = Product.objects.filter(category_id=3)
    sub = Subcategory.objects.all()
    return render(request,'store_templates/womencollection.html',{'product':product,'sub':sub})
 
