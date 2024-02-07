@@ -222,7 +222,7 @@ def forgotPassword_otp(request):
 
 
 def resetPassword(request):
-    mobile_number = mobile_number_forgotPassword
+    mobile_number = request.session.get('mobile_number_forgotPassword')
     
     if request.method == 'POST':
         password1 = request.POST.get('password')
@@ -251,6 +251,7 @@ def resetPassword(request):
 def userprofile(request):
     user=request.user
     address = user.addresses.all()
+    
    
     if address:
         address_added = True
@@ -272,6 +273,7 @@ def userprofile(request):
 def add_address(request):
   user=request.user
   user_profile = UserProfile()
+  
   if request.method == 'POST':
         form = UserProfileForm(request.POST)
         if form.is_valid():
@@ -282,7 +284,7 @@ def add_address(request):
             state = form.cleaned_data['state']
             country = form.cleaned_data['country']
             pincode = form.cleaned_data['pincode']
-            status = request.POST['my_checkbox']
+            status = request.POST.get('my_checkbox', False)
             print(status)
             user_profile = UserProfile(user=user,address_line_1=address_line_1,address_line_2=address_line_2,city=city,state=state,country=country,pincode=pincode,status=status)
             print(user_profile.status)
